@@ -1,0 +1,1935 @@
+name: "custom:arista-bgp"
+minDynatraceVersion: "1.318.0"
+minEECVersion: "1.251"
+author:
+  name: "Custom Extensions Creator App"
+version: "0.0.8"
+vars:
+  - id: "ext.activationtag"
+    displayName: "Extension activation tag"
+    type: "text"
+  - id: "if_name"
+    type: "text"
+    displayName: "Pattern to filter capturing of Interfaces by Name"
+    maxLength: 50000
+  - id: "if_admin_status"
+    type: "text"
+    displayName: "Pattern to filter capturing of Interfaces by Admin Status"
+    maxLength: 50000
+  - id: "if_oper_status"
+    type: "text"
+    displayName: "Pattern to filter capturing of Interfaces by Operational Status"
+    maxLength: 50000
+  - id: "if_alias"
+    type: "text"
+    displayName: "Pattern to filter capturing of Interfaces by Alias"
+    maxLength: 50000
+  - id: "if_type"
+    type: "text"
+    displayName: "Pattern to filter capturing of Interfaces by Type"
+    maxLength: 50000
+metrics:
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.entity_attributes"
+    metadata:
+      displayName: "Device entity attributes"
+      description: "Constant value of 1 used for reporting entity attributes at a
+        lower frequency"
+      unit: "Unspecified"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.cpu.total.1min"
+    metadata:
+      displayName: "CPU utilization"
+      description: "Overall CPU utilization percentage in the last 1 min."
+      unit: "Percent"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.cpu.total.5min"
+    metadata:
+      displayName: "CPU utilization"
+      description: "Overall CPU utilization percentage in the last 5 min."
+      unit: "Percent"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.memory.used"
+    metadata:
+      displayName: "Memory used"
+      description: "Total memory currently in use"
+      unit: "KiloByte"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.memory.free"
+    metadata:
+      displayName: "Memory free"
+      description: "Total memory available"
+      unit: "KiloByte"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.memory.total"
+    metadata:
+      displayName: "Memory total"
+      description: "Total memory installed"
+      unit: "KiloByte"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.temperature.sensor.val\
+      ue"
+    metadata:
+      displayName: "Temperature sensor value"
+      description: "Current temperature reading from sensors"
+      unit: "Unspecified"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.fan.status"
+    metadata:
+      displayName: "Fan status"
+      description: "Current status of fan components"
+      unit: "Unspecified"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.power.supply.status"
+    metadata:
+      displayName: "Power supply status"
+      description: "Current status of power supply units"
+      unit: "Unspecified"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.snmp.in.pkts.count"
+    metadata:
+      displayName: "Messages delivered"
+      description: "Total number of messages delivered from the transport service"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.snmp.out.pkts.count"
+    metadata:
+      displayName: "Messages passed"
+      description: "Total number of messages passed to the transport service"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.snmp.silentdrops.count"
+    metadata:
+      displayName: "Silently dropped PDUs"
+      description: "Number of silently dropped PDUs due to the large reply size"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.drops.proxy.count"
+    metadata:
+      displayName: "Proxy dropped PDUs"
+      description: "Number of silently dropped PDUs due to reason other than a time-out"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.snmp.in.bad.versions.c\
+      ount"
+    metadata:
+      displayName: "Unsupported SNMP version messages"
+      description: "Total number of messages delivered with an unsupported SNMP version"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.snmp.in.bad.community.\
+      names.count"
+    metadata:
+      displayName: "Messages with bad community names"
+      description: "Number of messages with an unknown SNMP community"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.snmp.in.bad.community.\
+      uses.count"
+    metadata:
+      displayName: "Messages not allowed in community"
+      description: "Number of messages not allowed for the used SNMP community"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.snmp.in.nosuchnames.co\
+      unt"
+    metadata:
+      displayName: "'noSuchName' errors"
+      description: "Number of PDUs delivered with 'noSuchName' error"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.snmp.in.bad.values.cou\
+      nt"
+    metadata:
+      displayName: "'badValue' errors"
+      description: "Number of PDUs delivered with 'badValue' error"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.snmp.in.traps.count"
+    metadata:
+      displayName: "Traps processed"
+      description: "Total number of SNMP Trap PDUs accepted and processed"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.snmp.out.traps.count"
+    metadata:
+      displayName: "Traps generated"
+      description: "Total number of SNMP Trap PDUs generated"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.sys.uptime"
+    metadata:
+      displayName: "Time since the last re-start"
+      description: "The time (in hundredths of a second) since the network management
+        portion of the system was last re-initialized"
+      unit: "Unspecified"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "func:com.dynatrace.extension.snmp-generic-arista-device.sys.uptime.millis"
+    query:
+      metricSelector: "(com.dynatrace.extension.snmp-generic-arista-device.sys.uptime) * (10)"
+    metadata:
+      displayName: "Time since the last re-start"
+      description: "The time (in milliseconds) since the network management portion of
+        the system was last re-initialized"
+      unit: "MilliSecond"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.if.lastchange"
+    metadata:
+      displayName: "Last interface status change"
+      description: "Value of 'sysUpTime' when the interface entered its current state"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_network_interface"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.if.in.octets.count"
+    metadata:
+      displayName: "Octets received"
+      description: "The total number of octets received on the interface including
+        framing characters"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_network_interface"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.if.hc.in.octets.count"
+    metadata:
+      displayName: "Octets received (high capacity)"
+      description: "The total number of octets received on the interface including
+        framing characters. This metric uses 64 bit counter and should be used
+        for highspeed devices."
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_network_interface"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.if.in.errors.count"
+    metadata:
+      displayName: "Inbound errors"
+      description: "Number of inbound packets/transmission units with errors"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_network_interface"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.if.in.discards.count"
+    metadata:
+      displayName: "Inbound discards"
+      description: "Number of inbound packets discarded"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_network_interface"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.if.out.octets.count"
+    metadata:
+      displayName: "Octets transmitted"
+      description: "The total number of octets transmitted out of the interface
+        including framing characters"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_network_interface"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.if.hc.out.octets.count"
+    metadata:
+      displayName: "Octets transmitted (high capacity)"
+      description: "The total number of octets transmitted out of the interface
+        including framing characters. This metric uses 64 bit counter and should
+        be used for highspeed devices."
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_network_interface"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.if.out.errors.count"
+    metadata:
+      displayName: "Outbound errors"
+      description: "Number of outbound packets/transmission units with errors"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_network_interface"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.if.out.discards.count"
+    metadata:
+      displayName: "Outbound discards"
+      description: "Number of outbound packets discarded"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_network_interface"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.tcp.activeopens.count"
+    metadata:
+      displayName: "TCP active opens"
+      description: "Number of transitions of TCP connections from CLOSED to SYN-SENT"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.tcp.passiveopens.count"
+    metadata:
+      displayName: "TCP passive opens"
+      description: "Number of transitions of TCP connections from CLOSED to SYN-RCVD"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.tcp.attemptfails.count"
+    metadata:
+      displayName: "TCP failed attempts"
+      description: "Number of transitions of TCP connections from SYN-SENT/SYN-RCVD to
+        CLOSED and from SYN-RCVD to LISTEN"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.tcp.estab.resets.count"
+    metadata:
+      displayName: "TCP resets"
+      description: "Number of transitions of TCP connections from
+        ESTABLISHED/CLOSE-WAIT to CLOSED"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.tcp.curr.estab"
+    metadata:
+      displayName: "TCP connections"
+      description: "Number of TCP connections in the ESTABLISHED/CLOSE-WAIT state"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "func:com.dynatrace.extension.snmp-generic-arista-device.tcp.hc.total"
+    query:
+      metricSelector: "(com.dynatrace.extension.snmp-generic-arista-device.tcp.hc.in.\
+        segs.count)+(com.dynatrace.extension.snmp-generic-arista-device.tcp.hc.\
+        out.segs.count)"
+    metadata:
+      displayName: "TCP segments sent + received"
+      description: "Total number of segments sent + received"
+      unit: "Count"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.tcp.hc.in.segs.count"
+    metadata:
+      displayName: "TCP segments received"
+      description: "Total number of segments received (including errors)"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.tcp.hc.out.segs.count"
+    metadata:
+      displayName: "TCP segments sent"
+      description: "Total number of segments sent (excluding retransmissions)"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.tcp.retrans.segs.count"
+    metadata:
+      displayName: "TCP segments retransmitted"
+      description: "Total number of segments retransmitted"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.tcp.in.errs.count"
+    metadata:
+      displayName: "TCP segment errors"
+      description: "Total number of segments received in error"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.tcp.out.rsts.count"
+    metadata:
+      displayName: "TCP segment resets"
+      description: "Number of TCP segments sent containing the RST flag"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "func:com.dynatrace.extension.snmp-generic-arista-device.udp.hc.total"
+    query:
+      metricSelector: "(com.dynatrace.extension.snmp-generic-arista-device.udp.hc.in.\
+        datagrams.count)+(com.dynatrace.extension.snmp-generic-arista-device.ud\
+        p.hc.out.datagrams.count)"
+    metadata:
+      displayName: "UDP datagrams sent + received"
+      description: "Total number of UDP datagrams sent + received"
+      unit: "Count"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.udp.hc.in.datagrams.co\
+      unt"
+    metadata:
+      displayName: "UDP datagrams delivered"
+      description: "Total number of UDP datagrams delivered"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.udp.noports.count"
+    metadata:
+      displayName: "UDP datagrams received without port"
+      description: "Number of received UDP datagrams (no application at the
+        destination port)"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.udp.in.errors.count"
+    metadata:
+      displayName: "UDP datagram errors"
+      description: "Number of received and not delivered UDP datagrams (other than no
+        application at the destination port)"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.udp.hc.out.datagrams.c\
+      ount"
+    metadata:
+      displayName: "UDP datagrams sent"
+      description: "Total number of UDP datagrams sent"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "func:com.dynatrace.extension.snmp-generic-arista-device.totaltraffic"
+    query:
+      metricSelector: "(com.dynatrace.extension.snmp-generic-arista-device.udp.hc.in.\
+        datagrams.count)+(com.dynatrace.extension.snmp-generic-arista-device.ud\
+        p.hc.out.datagrams.count)+(com.dynatrace.extension.snmp-generic-arista-\
+        device.tcp.hc.in.segs.count)+(com.dynatrace.extension.snmp-generic-aris\
+        ta-device.tcp.hc.out.segs.count)"
+    metadata:
+      displayName: "Overall TCP & UDP elements"
+      description: "Total number of TCP segments and UDP datagrams sent and received"
+      unit: "Count"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.if.highspeed"
+    metadata:
+      displayName: "Interface speed"
+      description: "Speed of the network interface in MegaBits per second."
+      unit: "MegaBitPerSecond"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_network_interface"
+  - key: "func:com.dynatrace.extension.snmp-generic-arista-device.if.in.octets.bitp\
+      ersec"
+    query:
+      metricSelector: "((com.dynatrace.extension.snmp-generic-arista-device.if.in.oct\
+        ets.count) * (8)):rate(1s)"
+    metadata:
+      displayName: "Interface incoming traffic"
+      description: "Incoming network traffic on interface in bits per second."
+      unit: "BitPerSecond"
+  - key: "func:com.dynatrace.extension.snmp-generic-arista-device.if.hc.in.octets.b\
+      itpersec"
+    query:
+      metricSelector: "((com.dynatrace.extension.snmp-generic-arista-device.if.hc.in.\
+        octets.count) * (8)):rate(1s)"
+    metadata:
+      displayName: "Interface incoming traffic (high capacity)"
+      description: "Incoming network traffic on interface in bits per second. This
+        metric uses high capacity octet metrics and should be used for highspeed
+        devices."
+      unit: "BitPerSecond"
+  - key: "func:com.dynatrace.extension.snmp-generic-arista-device.if.out.octets.bit\
+      persec"
+    query:
+      metricSelector: "((com.dynatrace.extension.snmp-generic-arista-device.if.out.oc\
+        tets.count) * (8)):rate(1s)"
+    metadata:
+      displayName: "Interface outgoing traffic"
+      description: "Outgoing network traffic on interface in bits per second."
+      unit: "BitPerSecond"
+  - key: "func:com.dynatrace.extension.snmp-generic-arista-device.if.hc.out.octets.\
+      bitpersec"
+    query:
+      metricSelector: "((com.dynatrace.extension.snmp-generic-arista-device.if.hc.out\
+        .octets.count) * (8)):rate(1s)"
+    metadata:
+      displayName: "Interface outgoing traffic (high capacity)"
+      description: "Outgoing network traffic on interface in bits per second. This
+        metric uses high capacity octet metrics and should be used for highspeed
+        devices."
+      unit: "BitPerSecond"
+  - key: "func:com.dynatrace.extension.snmp-generic-arista-device.if.bandwidth"
+    query:
+      metricSelector: "((((((com.dynatrace.extension.snmp-generic-arista-device.if.hc\
+        .in.octets.count) *
+        (8)):rate(1s))+(((com.dynatrace.extension.snmp-generic-arista-device.if\
+        .hc.out.octets.count) *
+        (8)):rate(1s)))/((com.dynatrace.extension.snmp-generic-arista-device.if\
+        .highspeed) * 1000000)) * (100))"
+    metadata:
+      displayName: "Interface bandwidth utilization"
+      description: "Bandwidth utilization on interface. Computed as sum of incoming
+        and outgoing traffic divided by interface speed. Presented as
+        percentage."
+      unit: "Percent"
+  - key: "func:com.dynatrace.extension.snmp-generic-arista-device.if.in.bandwidth"
+    query:
+      metricSelector: "(((((com.dynatrace.extension.snmp-generic-arista-device.if.hc.\
+        in.octets.count) *
+        (8)):rate(1s))/((com.dynatrace.extension.snmp-generic-arista-device.if.\
+        highspeed) * (1000000))) * (100))"
+    metadata:
+      displayName: "Inbound bandwidth utilization"
+      description: "Inbound bandwidth utilization on interface. Computed as sum of
+        incoming traffic divided by interface speed. Presented as percentage."
+      unit: "Percent"
+  - key: "func:com.dynatrace.extension.snmp-generic-arista-device.if.out.bandwidth"
+    query:
+      metricSelector: "(((((com.dynatrace.extension.snmp-generic-arista-device.if.hc.\
+        out.octets.count) *
+        (8)):rate(1s))/((com.dynatrace.extension.snmp-generic-arista-device.if.\
+        highspeed) * (1000000))) * (100))"
+    metadata:
+      displayName: "Outbound bandwidth utilization"
+      description: "Outbound bandwidth utilization on interface. Computed as sum of
+        outgoing traffic divided by interface speed. Presented as percentage."
+      unit: "Percent"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.bgp4.peer.state"
+    metadata:
+      displayName: "BGP peer connection state"
+      description: "The BGP peer connection state. idle(1), connect(2), active(3),
+        opensent(4), openconfirm(5), established(6). BGP4-MIB."
+      unit: "State"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.bgp4.peer.admin.status"
+    metadata:
+      displayName: "BGP peer admin status"
+      description: "The desired state of the BGP connection. stop(1), start(2). BGP4-MIB."
+      unit: "State"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.bgp4.established_time"
+    metadata:
+      displayName: "BGP peer established time"
+      description: "This timer indicates how long (in seconds) this peer has been in
+        the established state or how long since this peer was last in the
+        established state."
+      unit: "Second"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.bgp4.peer.in.updates.c\
+      ount"
+    metadata:
+      displayName: "BGP peer inbound updates"
+      description: "The number of BGP UPDATE messages received on this connection.
+        BGP4-MIB."
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.bgp4.peer.out.updates.\
+      count"
+    metadata:
+      displayName: "BGP peer outbound updates"
+      description: "The number of BGP UPDATE messages transmitted on this connection.
+        BGP4-MIB."
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.bgp4.peer.in.totalmess\
+      ages.count"
+    metadata:
+      displayName: "BGP peer total inbound messages"
+      description: "The total number of messages received from the remote peer on this
+        connection. BGP4-MIB."
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.bgp4.peer.out.totalmes\
+      sages.count"
+    metadata:
+      displayName: "BGP peer total outbound messages"
+      description: "The total number of messages transmitted to the remote peer on
+        this connection. BGP4-MIB."
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+  - key: "com.dynatrace.extension.snmp-generic-arista-device.bgp4.peer.fsm.establis\
+      hed.transitions.count"
+    metadata:
+      displayName: "BGP peer FSM established transitions"
+      description: "The total number of times the BGP FSM transitioned into the
+        established state. BGP4-MIB."
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+snmp:
+  - group: "generic-arista-device-attributes"
+    interval:
+      minutes: 30
+    dimensions:
+      - key: "sys.name"
+        value: "oid:1.3.6.1.2.1.1.5.0"
+        filter: "const:$and($not($eq(n/a)), $not($eq()))"
+      - key: "sys.contact"
+        value: "oid:1.3.6.1.2.1.1.4.0"
+      - key: "activation.tag"
+        value: "var:ext.activationtag"
+      - key: "device.port"
+        value: "this:device.port"
+      - key: "lldp.chassis.id"
+        value: "$networkFormat(oid:1.0.8802.1.1.2.1.3.1.0, oid:1.0.8802.1.1.2.1.3.2.0)"
+      - key: "cdp.device.id"
+        value: "oid:1.3.6.1.4.1.9.9.23.1.3.4.0"
+    subgroups:
+      - subgroup: "Device Info for entity attributes"
+        table: false
+        dimensions:
+          - key: "sys.description"
+            value: "oid:1.3.6.1.2.1.1.1.0"
+          - key: "sys.objectid"
+            value: "oid:1.3.6.1.2.1.1.2.0"
+          - key: "sys.location"
+            value: "oid:1.3.6.1.2.1.1.6.0"
+          - key: "monitoring.mode"
+            value: "const:Extension"
+          - key: "device.type"
+            value: "const:arista"
+          - key: "sys.services"
+            value: "oid:1.3.6.1.2.1.1.7.0"
+          - key: "if.count"
+            value: "oid:1.3.6.1.2.1.2.1.0"
+          - key: "software_revision"
+            value: "oid:1.3.6.1.2.1.16.19.2.0"
+        metrics:
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.entity_attributes"
+            value: "const:1"
+        interval:
+          minutes: 10
+  - group: "generic-network-topology"
+    interval:
+      minutes: 10
+    dimensions:
+      - key: "sys.name"
+        value: "oid:1.3.6.1.2.1.1.5.0"
+        filter: "const:$and($not($eq(n/a)), $not($eq()))"
+      - key: "lldp.chassis.id"
+        value: "$networkFormat(oid:1.0.8802.1.1.2.1.3.1.0, oid:1.0.8802.1.1.2.1.3.2.0)"
+      - key: "cdp.device.id"
+        value: "oid:1.3.6.1.4.1.9.9.23.1.3.4.0"
+    subgroups:
+      - subgroup: "neighbor-discovery"
+        featureSet: "neighbor-discovery"
+        table: true
+        dimensions:
+          - key: "neighbor.chassis.id"
+            value: "$networkFormat(oid:1.0.8802.1.1.2.1.4.1.1.4,
+              oid:1.0.8802.1.1.2.1.4.1.1.5)"
+          - key: "neighbor.chassistype"
+            value: "oid:1.0.8802.1.1.2.1.4.1.1.4"
+          - key: "neighbor.port.id"
+            value: "$networkFormat(oid:1.0.8802.1.1.2.1.4.1.1.6,
+              oid:1.0.8802.1.1.2.1.4.1.1.7)"
+          - key: "neighbor.porttype"
+            value: "oid:1.0.8802.1.1.2.1.4.1.1.6"
+          - key: "neighbor.port.desc"
+            value: "oid:1.0.8802.1.1.2.1.4.1.1.8"
+          - key: "neighbor.sys.name"
+            value: "oid:1.0.8802.1.1.2.1.4.1.1.9"
+          - key: "neighbor.sys.desc"
+            value: "oid:1.0.8802.1.1.2.1.4.1.1.10"
+          - key: "neighbor.cap.support"
+            value: "oid:1.0.8802.1.1.2.1.4.1.1.11"
+          - key: "neighbor.cap.enabled"
+            value: "oid:1.0.8802.1.1.2.1.4.1.1.12"
+        metrics:
+          - key: "com.dynatrace.extension.network_device.lldp_neighbor"
+            value: "const:1"
+        interval:
+          minutes: 10
+      - subgroup: "Uptime"
+        dimensions:
+          - key: "sys.description"
+            value: "oid:1.3.6.1.2.1.1.1.0"
+          - key: "sys.contact"
+            value: "oid:1.3.6.1.2.1.1.4.0"
+          - key: "sys.objectid"
+            value: "oid:1.3.6.1.2.1.1.2.0"
+          - key: "sys.location"
+            value: "oid:1.3.6.1.2.1.1.6.0"
+          - key: "monitoring.mode"
+            value: "const:Extension"
+          - key: "device.type"
+            value: "const:arista"
+        metrics:
+          - key: "com.dynatrace.extension.network_device.sysuptime"
+            value: "oid:1.3.6.1.2.1.1.3.0"
+        interval:
+          minutes: 10
+      - subgroup: "Network device"
+        table: true
+        metrics:
+          - key: "com.dynatrace.extension.network_device.cpu_usage"
+            value: "oid:1.3.6.1.2.1.25.3.3.1.2"
+          - key: "com.dynatrace.extension.network_device.memory_used"
+            value: "oid:1.3.6.1.2.1.25.2.3.1.6"
+          - key: "com.dynatrace.extension.network_device.memory_free"
+            value: "oid:1.3.6.1.2.1.25.2.3.1.5"
+        interval:
+          minutes: 10
+      - subgroup: "Network interface"
+        table: true
+        dimensions:
+          - key: "if.name"
+            value: "oid:1.3.6.1.2.1.2.2.1.2"
+            filter: "var:if_name"
+          - key: "if.type"
+            value: "oid:1.3.6.1.2.1.2.2.1.3"
+            filter: "var:if_type"
+          - key: "oper.status"
+            value: "oid:1.3.6.1.2.1.2.2.1.8"
+            filter: "var:if_oper_status"
+          - key: "admin.status"
+            value: "oid:1.3.6.1.2.1.2.2.1.7"
+            filter: "var:if_admin_status"
+          - key: "if.alias"
+            value: "oid:1.3.6.1.2.1.31.1.1.1.18"
+            filter: "var:if_alias"
+          - key: "mac.address"
+            value: "oid:1.3.6.1.2.1.2.2.1.6"
+            filter: "const:$and($not($eq(n/a)), $not($eq()))"
+          - key: "if.speed"
+            value: "oid:1.3.6.1.2.1.31.1.1.1.15"
+        metrics:
+          - key: "com.dynatrace.extension.network_device.if.bytes_in.count"
+            value: "oid:1.3.6.1.2.1.31.1.1.1.6"
+            type: "count"
+          - key: "com.dynatrace.extension.network_device.if.bytes_out.count"
+            value: "oid:1.3.6.1.2.1.31.1.1.1.10"
+            type: "count"
+          - key: "com.dynatrace.extension.network_device.if.in.errors.count"
+            value: "oid:1.3.6.1.2.1.2.2.1.14"
+            type: "count"
+          - key: "com.dynatrace.extension.network_device.if.in.discards.count"
+            value: "oid:1.3.6.1.2.1.2.2.1.13"
+            type: "count"
+          - key: "com.dynatrace.extension.network_device.if.out.errors.count"
+            value: "oid:1.3.6.1.2.1.2.2.1.20"
+            type: "count"
+          - key: "com.dynatrace.extension.network_device.if.out.discards.count"
+            value: "oid:1.3.6.1.2.1.2.2.1.19"
+            type: "count"
+          - key: "com.dynatrace.extension.network_device.if.status"
+            value: "const:1"
+        interval:
+          minutes: 10
+  - group: "arista-network-peers"
+    interval:
+      minutes: 10
+    dimensions:
+      - key: "sys.name"
+        value: "oid:1.3.6.1.2.1.1.5.0"
+        filter: "const:$and($not($eq(n/a)), $not($eq()))"
+      - key: "sys.contact"
+        value: "oid:1.3.6.1.2.1.1.4.0"
+      - key: "activation.tag"
+        value: "var:ext.activationtag"
+      - key: "device.port"
+        value: "this:device.port"
+      - key: "device.type"
+        value: "const:arista"
+      - key: "monitoring.mode"
+        value: "const:Extension"
+      - key: "lldp.chassis.id"
+        value: "$networkFormat(oid:1.0.8802.1.1.2.1.3.1.0, oid:1.0.8802.1.1.2.1.3.2.0)"
+    subgroups:
+      - subgroup: "BGP"
+        table: true
+        featureSet: "BGP"
+        dimensions:
+          - key: "bgp.peer.state"
+            value: "oid:1.3.6.1.2.1.15.3.1.2"
+          - key: "bgp.peer.admin.status"
+            value: "oid:1.3.6.1.2.1.15.3.1.3"
+          - key: "bgp.peer.negotiated.version"
+            value: "oid:1.3.6.1.2.1.15.3.1.4"
+          - key: "bgp.peer.local.address"
+            value: "oid:1.3.6.1.2.1.15.3.1.5"
+          - key: "bgp.peer.local.port"
+            value: "oid:1.3.6.1.2.1.15.3.1.6"
+          - key: "bgp.peer.remote.address"
+            value: "oid:1.3.6.1.2.1.15.3.1.7"
+          - key: "bgp.peer.remote.port"
+            value: "oid:1.3.6.1.2.1.15.3.1.8"
+          - key: "bgp.peer.remote.as"
+            value: "oid:1.3.6.1.2.1.15.3.1.9"
+          - key: "bgp.peer.last.error"
+            value: "oid:1.3.6.1.2.1.15.3.1.14"
+          - key: "protocol"
+            value: "const:bgp4"
+        metrics:
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.bgp4.peer.state"
+            value: "oid:1.3.6.1.2.1.15.3.1.2"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.bgp4.peer.admin.status"
+            value: "oid:1.3.6.1.2.1.15.3.1.3"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.bgp4.established_time"
+            value: "oid:1.3.6.1.2.1.15.3.1.16"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.bgp4.peer.in.updates.c\
+              ount"
+            value: "oid:1.3.6.1.2.1.15.3.1.10"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.bgp4.peer.out.updates.\
+              count"
+            value: "oid:1.3.6.1.2.1.15.3.1.11"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.bgp4.peer.in.totalmess\
+              ages.count"
+            value: "oid:1.3.6.1.2.1.15.3.1.12"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.bgp4.peer.out.totalmes\
+              sages.count"
+            value: "oid:1.3.6.1.2.1.15.3.1.13"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.bgp4.peer.fsm.establis\
+              hed.transitions.count"
+            value: "oid:1.3.6.1.2.1.15.3.1.15"
+            type: "count"
+        interval:
+          minutes: 10
+  - group: "generic-arista-device-data-1"
+    featureSet: "Control Plane"
+    interval:
+      minutes: 10
+    dimensions:
+      - key: "sys.name"
+        value: "oid:1.3.6.1.2.1.1.5.0"
+        filter: "const:$and($not($eq(n/a)), $not($eq()))"
+      - key: "sys.contact"
+        value: "oid:1.3.6.1.2.1.1.4.0"
+      - key: "activation.tag"
+        value: "var:ext.activationtag"
+      - key: "device.port"
+        value: "this:device.port"
+      - key: "device.type"
+        value: "const:arista"
+      - key: "monitoring.mode"
+        value: "const:Extension"
+      - key: "lldp.chassis.id"
+        value: "$networkFormat(oid:1.0.8802.1.1.2.1.3.1.0, oid:1.0.8802.1.1.2.1.3.2.0)"
+    metrics:
+      - key: "com.dynatrace.extension.snmp-generic-arista-device.sys.uptime"
+        value: "oid:1.3.6.1.2.1.1.3.0"
+        type: "gauge"
+    subgroups:
+      - subgroup: "Device CPU & RAM consumption"
+        featureSet: "Control Plane"
+        table: true
+        dimensions:
+          - key: "hrdeviceindex"
+            value: "oid:1.3.6.1.2.1.25.3.2.1.1"
+          - key: "hrdeviceiescr"
+            value: "oid:1.3.6.1.2.1.25.3.2.1.3"
+          - key: "hrstorageindex"
+            value: "oid:1.3.6.1.2.1.25.2.3.1.1"
+          - key: "hrstoragedescr"
+            value: "oid:1.3.6.1.2.1.25.2.3.1.3"
+        metrics:
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.cpu.total.1min"
+            value: "oid:1.3.6.1.2.1.25.3.3.1.2"
+            type: "gauge"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.memory.used"
+            value: "oid:1.3.6.1.2.1.25.2.3.1.6"
+            type: "gauge"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.memory.total"
+            value: "oid:1.3.6.1.2.1.25.2.3.1.5"
+            type: "gauge"
+        interval:
+          minutes: 10
+      - subgroup: "SNMP health"
+        featureSet: "SNMP Health"
+        table: false
+        metrics:
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.snmp.in.pkts.count"
+            value: "oid:1.3.6.1.2.1.11.1.0"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.snmp.out.pkts.count"
+            value: "oid:1.3.6.1.2.1.11.2.0"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.snmp.silentdrops.count"
+            value: "oid:1.3.6.1.2.1.11.31.0"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.drops.proxy.count"
+            value: "oid:1.3.6.1.2.1.11.32.0"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.snmp.in.bad.versions.c\
+              ount"
+            value: "oid:1.3.6.1.2.1.11.3.0"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.snmp.in.bad.community.\
+              names.count"
+            value: "oid:1.3.6.1.2.1.11.4.0"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.snmp.in.bad.community.\
+              uses.count"
+            value: "oid:1.3.6.1.2.1.11.5.0"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.snmp.in.nosuchnames.co\
+              unt"
+            value: "oid:1.3.6.1.2.1.11.9.0"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.snmp.in.bad.values.cou\
+              nt"
+            value: "oid:1.3.6.1.2.1.11.10.0"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.snmp.in.traps.count"
+            value: "oid:1.3.6.1.2.1.11.19.0"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.snmp.out.traps.count"
+            value: "oid:1.3.6.1.2.1.11.29.0"
+            type: "count"
+        interval:
+          minutes: 10
+      - subgroup: "NIC status"
+        featureSet: "Interfaces"
+        table: true
+        dimensions:
+          - key: "if.idx"
+            value: "oid:1.3.6.1.2.1.2.2.1.1"
+          - key: "if.descr"
+            value: "oid:1.3.6.1.2.1.2.2.1.2"
+            filter: "var:if_name"
+          - key: "if.type"
+            value: "oid:1.3.6.1.2.1.2.2.1.3"
+            filter: "var:if_type"
+          - key: "if.mtu"
+            value: "oid:1.3.6.1.2.1.2.2.1.4"
+          - key: "if.speed"
+            value: "oid:1.3.6.1.2.1.2.2.1.5"
+          - key: "if.highspeed"
+            value: "oid:1.3.6.1.2.1.31.1.1.1.15"
+          - key: "if.adminstatus"
+            value: "oid:1.3.6.1.2.1.2.2.1.7"
+            filter: "var:if_admin_status"
+          - key: "if.operstatus"
+            value: "oid:1.3.6.1.2.1.2.2.1.8"
+            filter: "var:if_oper_status"
+          - key: "if.promiscuousmode"
+            value: "oid:1.3.6.1.2.1.31.1.1.1.16"
+          - key: "if.alias"
+            value: "oid:1.3.6.1.2.1.31.1.1.1.18"
+            filter: "var:if_alias"
+          - key: "if.name"
+            value: "oid:1.3.6.1.2.1.31.1.1.1.1"
+          - key: "mac.address"
+            value: "oid:1.3.6.1.2.1.2.2.1.6"
+          - key: "if.ipadentaddr"
+            value: "oid:1.3.6.1.2.1.4.20.1.1"
+        metrics:
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.if.lastchange"
+            value: "oid:1.3.6.1.2.1.2.2.1.9"
+            type: "gauge"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.if.highspeed"
+            value: "oid:1.3.6.1.2.1.31.1.1.1.15"
+            type: "gauge"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.if.in.octets.count"
+            value: "oid:1.3.6.1.2.1.2.2.1.10"
+            type: "count"
+            featureSet: "Interfaces 32-bit"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.if.hc.in.octets.count"
+            value: "oid:1.3.6.1.2.1.31.1.1.1.6"
+            type: "count"
+            featureSet: "Interfaces 64-bit"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.if.out.octets.count"
+            value: "oid:1.3.6.1.2.1.2.2.1.16"
+            type: "count"
+            featureSet: "Interfaces 32-bit"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.if.hc.out.octets.count"
+            value: "oid:1.3.6.1.2.1.31.1.1.1.10"
+            type: "count"
+            featureSet: "Interfaces 64-bit"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.if.in.errors.count"
+            value: "oid:1.3.6.1.2.1.2.2.1.14"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.if.in.discards.count"
+            value: "oid:1.3.6.1.2.1.2.2.1.13"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.if.out.errors.count"
+            value: "oid:1.3.6.1.2.1.2.2.1.20"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.if.out.discards.count"
+            value: "oid:1.3.6.1.2.1.2.2.1.19"
+            type: "count"
+        interval:
+          minutes: 10
+      - subgroup: "Transport layer statistics"
+        featureSet: "Traffic"
+        table: false
+        metrics:
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.tcp.activeopens.count"
+            value: "oid:1.3.6.1.2.1.6.5.0"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.tcp.passiveopens.count"
+            value: "oid:1.3.6.1.2.1.6.6.0"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.tcp.attemptfails.count"
+            value: "oid:1.3.6.1.2.1.6.7.0"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.tcp.estab.resets.count"
+            value: "oid:1.3.6.1.2.1.6.8.0"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.tcp.curr.estab"
+            value: "oid:1.3.6.1.2.1.6.9.0"
+            type: "gauge"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.tcp.hc.in.segs.count"
+            value: "oid:1.3.6.1.2.1.6.17.0"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.tcp.hc.out.segs.count"
+            value: "oid:1.3.6.1.2.1.6.18.0"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.tcp.retrans.segs.count"
+            value: "oid:1.3.6.1.2.1.6.12.0"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.tcp.in.errs.count"
+            value: "oid:1.3.6.1.2.1.6.14.0"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.tcp.out.rsts.count"
+            value: "oid:1.3.6.1.2.1.6.15.0"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.udp.hc.in.datagrams.co\
+              unt"
+            value: "oid:1.3.6.1.2.1.7.8.0"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.udp.noports.count"
+            value: "oid:1.3.6.1.2.1.7.2.0"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.udp.in.errors.count"
+            value: "oid:1.3.6.1.2.1.7.3.0"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-arista-device.udp.hc.out.datagrams.c\
+              ount"
+            value: "oid:1.3.6.1.2.1.7.9.0"
+            type: "count"
+        interval:
+          minutes: 10
+topology:
+  types:
+    - name: "network:device"
+      displayName: "Network device"
+      enabled: true
+      rules:
+        - idPattern: "network_device_{device.address}"
+          sources:
+            - sourceType: "Metrics"
+              condition: "$eq(com.dynatrace.extension.snmp-generic-arista-device.sys.uptime)"
+          attributes:
+            - key: "dt.ip_addresses"
+              pattern: "{device.address}"
+              displayName: "IP Address"
+            - key: "dt.listen_ports"
+              pattern: "{device.port}"
+              displayName: "Listen Port"
+            - key: "dt.dns_names"
+              pattern: "{device.name}"
+              displayName: "DNS Names"
+            - key: "devType"
+              pattern: "{device.type}"
+              displayName: "Device Type"
+            - key: "devMonitoringMode"
+              pattern: "{monitoring.mode}"
+              displayName: "Monitoring Mode"
+            - key: "lldpChassisId"
+              pattern: "{lldp.chassis.id}"
+              displayName: "LLDP Chassis ID"
+            - key: "devSysContact"
+              pattern: "{sys.contact}"
+              displayName: "Contact"
+            - key: "dt.security_context"
+              pattern: "{dt.security_context}"
+              displayName: "Security Context"
+          requiredDimensions:
+            - key: "device.name"
+            - key: "device.address"
+            - key: "device.type"
+            - key: "lldp.chassis.id"
+          instanceNamePattern: "{sys.name}"
+        - idPattern: "network_device_{device.address}"
+          sources:
+            - sourceType: "Metrics"
+              condition: "$eq(com.dynatrace.extension.snmp-generic-arista-device.entity_attri\
+                butes)"
+          attributes:
+            - key: "dt.dns_names"
+              pattern: "{sys.name}"
+              displayName: "DNS Names"
+            - key: "devDescription"
+              pattern: "{sys.description}"
+              displayName: "Description"
+            - key: "devSysLocation"
+              pattern: "{sys.location}"
+              displayName: "Location"
+            - key: "devObjectId"
+              pattern: "{sys.objectid}"
+              displayName: "Object ID"
+            - key: "services"
+              pattern: "{services}"
+              displayName: "Services"
+            - key: "interface_count"
+              pattern: "{if.count}"
+              displayName: "Interface Count"
+            - key: "dt.security_context"
+              pattern: "{dt.security_context}"
+              displayName: "Security Context"
+          requiredDimensions:
+            - key: "sys.name"
+            - key: "sys.description"
+          instanceNamePattern: "{sys.name}"
+        - idPattern: "network_device_{device.address}"
+          sources:
+            - sourceType: "Metrics"
+              condition: "$prefix(com.dynatrace.extension.snmp-generic-arista-device)"
+          attributes:
+            - key: "dt.security_context"
+              pattern: "{dt.security_context}"
+              displayName: "Security Context"
+          requiredDimensions: []
+          instanceNamePattern: "{sys.name}"
+    - name: "network:interface"
+      displayName: "Network interface"
+      enabled: true
+      rules:
+        - idPattern: "network_interface_{mac.address}_{if.descr}"
+          sources:
+            - sourceType: "Metrics"
+              condition: "$prefix(com.dynatrace.extension.snmp-generic-arista-device.if)"
+          attributes:
+            - pattern: "{device.address}"
+              key: "dt.ip_addresses"
+              displayName: "Network device address"
+            - pattern: "{if.promiscuousmode}"
+              key: "promiscuousMode"
+              displayName: "PromiscuousMode"
+            - pattern: "{if.speed}"
+              key: "speed"
+              displayName: "Interface Speed"
+            - pattern: "{if.highspeed}"
+              key: "highspeed"
+              displayName: "Interface Speed (Mbps)"
+            - pattern: "{if.type}"
+              key: "type"
+              displayName: "Interface Type"
+            - pattern: "{if.operstatus}"
+              key: "opStatus"
+              displayName: "Operational Status"
+            - pattern: "{if.mtu}"
+              key: "mtu"
+              displayName: "MTU"
+            - pattern: "{if.descr}"
+              key: "description"
+              displayName: "Description"
+            - pattern: "{if.adminstatus}"
+              key: "adminStatus"
+              displayName: "Admin Status"
+            - key: "dt.security_context"
+              pattern: "{dt.security_context}"
+              displayName: "Security Context"
+          requiredDimensions: []
+          instanceNamePattern: "{if.descr}"
+    - name: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+      displayName: "Generic SNMP Arista Device"
+      enabled: true
+      rules:
+        - idPattern: "snmp_generic_arista_device_{device.address}"
+          sources:
+            - sourceType: "Metrics"
+              condition: "$eq(com.dynatrace.extension.snmp-generic-arista-device.sys.uptime)"
+          attributes:
+            - pattern: "{sys.description}"
+              key: "system_descr"
+              displayName: "Description"
+            - pattern: "{sys.location}"
+              key: "system_location"
+              displayName: "Location"
+            - pattern: "{if.count}"
+              key: "interface_count"
+              displayName: "Network Interface Count"
+            - pattern: "{software_revision}"
+              key: "softwareRevision"
+              displayName: "Software Revision"
+            - key: "dt.security_context"
+              pattern: "{dt.security_context}"
+              displayName: "Security Context"
+          requiredDimensions: []
+          instanceNamePattern: "Arista network device {sys.name} @ {device.address}:{device.port}"
+        - idPattern: "snmp_generic_arista_device_{device.address}"
+          sources:
+            - sourceType: "Metrics"
+              condition: "$prefix(com.dynatrace.extension.snmp-generic-arista-device)"
+          attributes:
+            - pattern: "{sys.contact}"
+              key: "system_contact"
+              displayName: "System Contact"
+            - pattern: "{sys.name}"
+              key: "system_name"
+              displayName: "Device Name"
+            - pattern: "{device.address}"
+              key: "dt.ip_addresses"
+              displayName: "Device Address"
+            - pattern: "{device.port}"
+              key: "dt.listen_ports"
+              displayName: "Device Port"
+            - pattern: "{device.name}"
+              key: "dt.dns_names"
+              displayName: "Device DNS Name"
+            - key: "dt.security_context"
+              pattern: "{dt.security_context}"
+              displayName: "Security Context"
+          requiredDimensions: []
+          instanceNamePattern: "Arista network device {sys.name} @ {device.address}:{device.port}"
+    - name: "snmp:com_dynatrace_extension_snmp_generic_arista_network_interface"
+      displayName: "Generic SNMP Arista Device Network Interface"
+      enabled: true
+      rules:
+        - idPattern: "snmp_generic_arista_network_interface_{device.address}-{if.idx}"
+          sources:
+            - sourceType: "Metrics"
+              condition: "$prefix(com.dynatrace.extension.snmp-generic-arista-device.if)"
+          attributes:
+            - pattern: "{device.address}"
+              key: "dt.ip_addresses"
+              displayName: "Network device address"
+            - pattern: "{if.alias}"
+              key: "alias"
+              displayName: "Alias"
+            - pattern: "{if.promiscuousmode}"
+              key: "promiscuousMode"
+              displayName: "PromiscuousMode"
+            - pattern: "{if.speed}"
+              key: "speed"
+              displayName: "Interface Speed"
+            - pattern: "{if.highspeed}"
+              key: "highspeed"
+              displayName: "Interface Speed (Mbps)"
+            - pattern: "{if.type}"
+              key: "type"
+              displayName: "Interface Type"
+            - pattern: "{if.operstatus}"
+              key: "opStatus"
+              displayName: "Operational Status"
+            - pattern: "{if.mtu}"
+              key: "mtu"
+              displayName: "MTU"
+            - pattern: "{if.descr}"
+              key: "description"
+              displayName: "Description"
+            - pattern: "{if.adminstatus}"
+              key: "adminStatus"
+              displayName: "Admin Status"
+            - key: "dt.security_context"
+              pattern: "{dt.security_context}"
+              displayName: "Security Context"
+          requiredDimensions: []
+          instanceNamePattern: "Arista network interface {if.descr} @ {device.name}"
+  relationships:
+    - fromType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+      typeOfRelation: "SAME_AS"
+      toType: "network:device"
+      sources:
+        - sourceType: "Metrics"
+          condition: "$prefix(com.dynatrace.extension.snmp-generic-arista-device)"
+    - fromType: "snmp:com_dynatrace_extension_snmp_generic_arista_network_interface"
+      typeOfRelation: "SAME_AS"
+      toType: "network:interface"
+      sources:
+        - sourceType: "Metrics"
+          condition: "$prefix(com.dynatrace.extension.snmp-generic-arista-device.if)"
+    - typeOfRelation: "CHILD_OF"
+      fromType: "snmp:com_dynatrace_extension_snmp_generic_arista_network_interface"
+      toType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+      enabled: true
+      sources:
+        - sourceType: "Metrics"
+          condition: "$prefix(com.dynatrace.extension.snmp-generic-arista-device)"
+    - typeOfRelation: "SAME_AS"
+      fromType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+      toType: "snmptraps:com_dynatrace_ext_snmp-traps"
+      enabled: true
+      sources:
+        - sourceType: "Entities"
+          mappingRules:
+            - sourceProperty: "dt.ip_addresses"
+              sourceTransformation: "Leave text as-is"
+              destinationProperty: "dt.ip_addresses"
+              destinationTransformation: "Leave text as-is"
+screens:
+  - entityType: "network:device"
+    propertiesCard:
+      displayOnlyConfigured: false
+      properties:
+        - type: "RELATION"
+          importantProperty: true
+          relation:
+            entitySelectorTemplate: "type(\"snmp:com_dynatrace_extension_snmp_generic_arist\
+              a_device\"),fromRelationships.isSameAs($(entityConditions))"
+            displayName: "Arista Device"
+    detailsInjections:
+      - key: "device_stats"
+        type: "CHART_GROUP"
+        entitySelectorTemplate: "type(\"snmp:com_dynatrace_extension_snmp_generic_arist\
+          a_device\"),fromRelationships.isSameAs($(entityConditions))"
+        conditions:
+          - "relatedEntity|entitySelectorTemplate=type(\"snmp:com_dynatrace_ext\
+            ension_snmp_generic_arista_device\"),fromRelationships.isSameAs($(e\
+            ntityConditions))"
+          - "entityAttribute|devMonitoringMode=Extension"
+      - key: "device_health"
+        type: "CHART_GROUP"
+        entitySelectorTemplate: "type(\"snmp:com_dynatrace_extension_snmp_generic_arist\
+          a_device\"),fromRelationships.isSameAs($(entityConditions))"
+        conditions:
+          - "relatedEntity|entitySelectorTemplate=type(\"snmp:com_dynatrace_ext\
+            ension_snmp_generic_arista_device\"),fromRelationships.isSameAs($(e\
+            ntityConditions))"
+          - "entityAttribute|devMonitoringMode=Extension"
+      - key: "network_stats"
+        type: "CHART_GROUP"
+        entitySelectorTemplate: "type(\"snmp:com_dynatrace_extension_snmp_generic_arist\
+          a_device\"),fromRelationships.isSameAs($(entityConditions))"
+        conditions:
+          - "relatedEntity|entitySelectorTemplate=type(\"snmp:com_dynatrace_ext\
+            ension_snmp_generic_arista_device\"),fromRelationships.isSameAs($(e\
+            ntityConditions))"
+          - "entityAttribute|devMonitoringMode=Extension"
+  - entityType: "snmptraps:com_dynatrace_ext_snmp-traps"
+    detailsInjections:
+      - type: "MESSAGE"
+        key: "related-arista-entity"
+        width: "FULL_SIZE"
+        conditions:
+          - "relatedEntity|entitySelectorTemplate=type(snmp:com_dynatrace_exten\
+            sion_snmp_generic_arista_device),fromRelationships.isSameAs($(entit\
+            yConditions))"
+    messageCards:
+      - key: "related-arista-entity"
+        target: "CLASSIC"
+        type: "MESSAGE"
+        message:
+          text: "Jump to related [Arista
+            device](relatedEntityScreen|entitySelectorTemplate=type(snmp:com_dy\
+            natrace_extension_snmp_generic_arista_device),fromRelationships.isS\
+            ameAs($(entityConditions))|name=Arista device)"
+          theme: "INFO"
+  - entityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+    propertiesCard:
+      displayOnlyConfigured: false
+      properties:
+        - type: "ATTRIBUTE"
+          attribute:
+            key: "system_name"
+            displayName: "Name"
+        - type: "ATTRIBUTE"
+          attribute:
+            key: "dt.dns_names"
+            displayName: "DNS name"
+            hidden: true
+    detailsSettings:
+      target: "BOTH"
+      staticContent:
+        breadcrumbs:
+          - entityType: "snmp:com_dynatrace_extension_snmp_generic_arista_device"
+            type: "ENTITY_LIST_REF"
+        showProblems: true
+        showProperties: true
+        showAddTag: true
+        showTags: true
+        showGlobalFilter: false
+      layout:
+        autoGenerate: false
+        cards:
+          - type: "CHART_GROUP"
+            key: "device_stats"
+            conditions:
+              - "metricAvailable|metric=com.dynatrace.extension.snmp-generic-ar\
+                ista-device.memory.used:filter(in(\"dt.entity.snmp:com_dynatrac\
+                e_extension_snmp_generic_arista_device\",
+                entitySelector(\"entityId($(entityId))\")))|lastWrittenWithinDa\
+                ys=5"
+          - type: "CHART_GROUP"
+            key: "bgp_charts"
+            conditions:
+              - "metricAvailable|metric=com.dynatrace.extension.snmp-generic-ar\
+                ista-device.bgp4.peer.state:filter(in(\"dt.entity.snmp:com_dyna\
+                trace_extension_snmp_generic_arista_device\",
+                entitySelector(\"entityId($(entityId))\")))|lastWrittenWithinDa\
+                ys=5"
+          - type: "METRIC_TABLE"
+            key: "bgp"
+            conditions:
+              - "metricAvailable|metric=com.dynatrace.extension.snmp-generic-ar\
+                ista-device.bgp4.peer.state:filter(in(\"dt.entity.snmp:com_dyna\
+                trace_extension_snmp_generic_arista_device\",
+                entitySelector(\"entityId($(entityId))\")))|lastWrittenWithinDa\
+                ys=5"
+          - type: "DQL_TABLE"
+            key: "bgp_dql"
+            conditions:
+              - "metricAvailable|metric=com.dynatrace.extension.snmp-generic-ar\
+                ista-device.bgp4.peer.state:filter(in(\"dt.entity.snmp:com_dyna\
+                trace_extension_snmp_generic_arista_device\",
+                entitySelector(\"entityId($(entityId))\")))|lastWrittenWithinDa\
+                ys=5"
+          - type: "CHART_GROUP"
+            key: "device_health"
+            conditions:
+              - "extensionConfigured|extensionId=com.dynatrace.extension.snmp-g\
+                eneric-arista-device|featureSets=Sensors"
+          - type: "CHART_GROUP"
+            key: "network_stats"
+          - type: "CHART_GROUP"
+            key: "snmp_health"
+          - type: "DQL_TABLE"
+            key: "network_interfaces_dql"
+          - type: "ENTITIES_LIST"
+            key: "network_interfaces"
+          - conditions:
+              - "!extensionConfigured|extensionId=com.dynatrace.extension.snmp-\
+                traps-generic"
+            type: "MESSAGE"
+            key: "snmp_traps_info"
+          - conditions:
+              - "!extensionConfigured|extensionId=com.dynatrace.extension.snmp-\
+                traps-generic"
+            key: "snmp_traps_info_platform"
+            type: "MESSAGE"
+            width: "FULL_SIZE"
+          - type: "CHART_GROUP"
+            key: "traps_stats"
+            conditions:
+              - "extensionConfigured|extensionId=com.dynatrace.extension.snmp-t\
+                raps-generic"
+          - conditions:
+              - "extensionConfigured|extensionId=com.dynatrace.extension.snmp-t\
+                raps-generic"
+            key: "traps_logs"
+            type: "LOGS"
+            width: "FULL_SIZE"
+          - type: "INJECTIONS"
+    metricTableCards:
+      - key: "bgp"
+        displayName: "BGP"
+        description: "Populated from BGP4-MIB"
+        pageSize: 5
+        displayCharts: false
+        enableDetailsExpandability: true
+        displayMicroCharts: true
+        numberOfVisibleCharts: 2
+        charts:
+          - displayName: "Peer state"
+            visualizationType: "GRAPH_CHART"
+            graphChartConfig:
+              metrics:
+                - metricSelector: "com.dynatrace.extension.snmp-generic-arista-device.bgp4.peer.s\
+                    tate:splitBy(\"bgp.peer.local.address\",\"bgp.peer.remote.a\
+                    ddress\",\"bgp.peer.remote.as\",\"bgp.peer.admin.status\")"
+              visualization:
+                seriesType: "LINE"
+          - displayName: "Established time"
+            visualizationType: "GRAPH_CHART"
+            graphChartConfig:
+              metrics:
+                - metricSelector: "com.dynatrace.extension.snmp-generic-arista-device.bgp4.establ\
+                    ished_time:splitBy(\"bgp.peer.local.address\",\"bgp.peer.re\
+                    mote.address\",\"bgp.peer.remote.as\",\"bgp.peer.admin.stat\
+                    us\")"
+                  visualization:
+                    seriesType: "LINE"
+    messageCards:
+      - key: "snmp_traps_info"
+        target: "CLASSIC"
+        type: "MESSAGE"
+        message:
+          text: "Set up [SNMP
+            Traps](hubExtension|extensionId=com.dynatrace.extension.snmp-traps-\
+            generic|text=SNMP Traps) extension to improve observability of this
+            device"
+          theme: "INFO"
+      - key: "snmp_traps_info_platform"
+        target: "PLATFORM"
+        type: "MESSAGE"
+        message:
+          text: "Set up SNMP Traps extension (com.dynatrace.extension.snmp-traps-generic)
+            to improve observability of this device"
+          theme: "INFO"
+    logsCards:
+      - displayName: "Traps and logs"
+        target: "BOTH"
+        enablePaging: true
+        filterQuery: "dt.source_entity inEntitySelector
+          \"type(snmptraps:com_dynatrace_ext_snmp-traps),toRelationships.isSame\
+          As($(entityConditions))\""
+        key: "traps_logs"
+        pageSize: 10
+        showFiltering: true
+        dqlQueryTable: "fetch logs| filter dt.source_entity in [ fetch
+          `dt.entity.snmptraps:com_dynatrace_ext_snmp-traps` | filter
+          in(same_as[`dt.entity.snmp:com_dynatrace_extension_snmp_generic_arist\
+          a_device`], $(entityId))| fields id ]"
+    chartsCards:
+      - key: "bgp_charts"
+        target: "BOTH"
+        mode: "NORMAL"
+        displayName: "BGP Overview"
+        description: "Populated from BGP4-MIB"
+        numberOfVisibleCharts: 4
+        hideEmptyCharts: true
+        charts:
+          - displayName: "Peer States"
+            visualizationType: "GRAPH_CHART"
+            graphChartConfig:
+              metrics:
+                - metricSelector: "com.dynatrace.extension.snmp-generic-arista-device.bgp4.peer.s\
+                    tate:splitBy(\"bgp.peer.remote.address\",\"bgp.peer.remote.\
+                    as\")"
+                  dqlQuery: "timeseries
+                    state=avg(`com.dynatrace.extension.snmp-generic-arista-devi\
+                    ce.bgp4.peer.state`),
+
+                    \  by:{bgp.peer.remote.address,bgp.peer.remote.as},
+
+                    \ 
+                    filter:{`dt.entity.snmp:com_dynatrace_extension_snmp_generi\
+                    c_arista_device`==$(entityId)}\n"
+                  visualization:
+                    seriesType: "LINE"
+          - displayName: "BGP Updates (In/Out)"
+            visualizationType: "GRAPH_CHART"
+            graphChartConfig:
+              metrics:
+                - metricSelector: "com.dynatrace.extension.snmp-generic-arista-device.bgp4.peer.i\
+                    n.updates.count:splitBy(\"bgp.peer.remote.address\")"
+                  dqlQuery: "timeseries
+                    updates=sum(`com.dynatrace.extension.snmp-generic-arista-de\
+                    vice.bgp4.peer.in.updates.count`),
+
+                    \  by:{bgp.peer.remote.address},
+
+                    \ 
+                    filter:{`dt.entity.snmp:com_dynatrace_extension_snmp_generi\
+                    c_arista_device`==$(entityId)}\n"
+                  visualization:
+                    displayName: "Inbound Updates"
+                    themeColor: "GREEN"
+                - metricSelector: "com.dynatrace.extension.snmp-generic-arista-device.bgp4.peer.o\
+                    ut.updates.count:splitBy(\"bgp.peer.remote.address\")"
+                  dqlQuery: "timeseries
+                    updates=sum(`com.dynatrace.extension.snmp-generic-arista-de\
+                    vice.bgp4.peer.out.updates.count`),
+
+                    \  by:{bgp.peer.remote.address},
+
+                    \ 
+                    filter:{`dt.entity.snmp:com_dynatrace_extension_snmp_generi\
+                    c_arista_device`==$(entityId)}\n"
+                  visualization:
+                    displayName: "Outbound Updates"
+                    themeColor: "ROYALBLUE"
+          - displayName: "BGP Messages (In/Out)"
+            visualizationType: "GRAPH_CHART"
+            graphChartConfig:
+              metrics:
+                - metricSelector: "com.dynatrace.extension.snmp-generic-arista-device.bgp4.peer.i\
+                    n.totalmessages.count:splitBy(\"bgp.peer.remote.address\")"
+                  dqlQuery: "timeseries
+                    msgs=sum(`com.dynatrace.extension.snmp-generic-arista-devic\
+                    e.bgp4.peer.in.totalmessages.count`),
+
+                    \  by:{bgp.peer.remote.address},
+
+                    \ 
+                    filter:{`dt.entity.snmp:com_dynatrace_extension_snmp_generi\
+                    c_arista_device`==$(entityId)}\n"
+                  visualization:
+                    displayName: "Inbound Messages"
+                    themeColor: "GREEN"
+                - metricSelector: "com.dynatrace.extension.snmp-generic-arista-device.bgp4.peer.o\
+                    ut.totalmessages.count:splitBy(\"bgp.peer.remote.address\")"
+                  dqlQuery: "timeseries
+                    msgs=sum(`com.dynatrace.extension.snmp-generic-arista-devic\
+                    e.bgp4.peer.out.totalmessages.count`),
+
+                    \  by:{bgp.peer.remote.address},
+
+                    \ 
+                    filter:{`dt.entity.snmp:com_dynatrace_extension_snmp_generi\
+                    c_arista_device`==$(entityId)}\n"
+                  visualization:
+                    displayName: "Outbound Messages"
+                    themeColor: "ROYALBLUE"
+          - displayName: "FSM Established Transitions"
+            visualizationType: "GRAPH_CHART"
+            graphChartConfig:
+              visualization:
+                themeColor: "PURPLE"
+                seriesType: "COLUMN"
+              metrics:
+                - metricSelector: "com.dynatrace.extension.snmp-generic-arista-device.bgp4.peer.f\
+                    sm.established.transitions.count:splitBy(\"bgp.peer.remote.\
+                    address\",\"bgp.peer.remote.as\")"
+                  dqlQuery: "timeseries
+                    transitions=sum(`com.dynatrace.extension.snmp-generic-arist\
+                    a-device.bgp4.peer.fsm.established.transitions.count`),
+
+                    \  by:{bgp.peer.remote.address,bgp.peer.remote.as},
+
+                    \ 
+                    filter:{`dt.entity.snmp:com_dynatrace_extension_snmp_generi\
+                    c_arista_device`==$(entityId)}\n"
+      - key: "traps_stats"
+        target: "BOTH"
+        mode: "NORMAL"
+        entitySelectorTemplate: "type(snmptraps:com_dynatrace_ext_snmp-traps),toRelatio\
+          nships.isSameAs($(entityConditions))"
+        charts:
+          - conditions: []
+            displayName: "Traps Count"
+            graphChartConfig:
+              metrics:
+                - metricSelector: "com.dynatrace.extension.snmp-traps-generic.traps.count:splitBy\
+                    ()"
+                  dqlQuery: "timeseries
+                    count=sum(`com.dynatrace.extension.snmp-traps-generic.traps\
+                    .count`)"
+                  visualization:
+                    displayName: "Traps count"
+                    seriesType: "COLUMN"
+              yAxes: []
+            visualizationType: "GRAPH_CHART"
+          - conditions: []
+            displayName: "Trap OIDs"
+            graphChartConfig:
+              metrics:
+                - metricSelector: "com.dynatrace.extension.snmp-traps-generic.traps.count:splitBy(\
+                    \"trapoid\")"
+                  dqlQuery: "timeseries
+                    count=sum(`com.dynatrace.extension.snmp-traps-generic.traps\
+                    .count`),by:{trapoid}"
+                  visualization:
+                    seriesType: "COLUMN"
+              stacked: true
+              yAxes: []
+            visualizationType: "GRAPH_CHART"
+        conditions: []
+        displayName: "Traps Statistics"
+        numberOfVisibleCharts: 2
+      - key: "snmp_health"
+        target: "BOTH"
+        mode: "NORMAL"
+        displayName: "SNMP Statistics"
+        description: "Populated from SNMPv2-MIB"
+        numberOfVisibleCharts: 4
+        charts:
+          - displayName: "Request Problems"
+            visualizationType: "GRAPH_CHART"
+            graphChartConfig:
+              metrics:
+                - metricSelector: "com.dynatrace.extension.snmp-generic-arista-device.snmp.silent\
+                    drops.count:splitBy(\"dt.entity.snmp:com_dynatrace_extensio\
+                    n_snmp_generic_arista_device\")"
+                  dqlQuery: "timeseries
+                    count=sum(`com.dynatrace.extension.snmp-generic-arista-devi\
+                    ce.snmp.silentdrops.count`),by:{`dt.entity.snmp:com_dynatra\
+                    ce_extension_snmp_generic_arista_device`},filter:{`dt.entit\
+                    y.snmp:com_dynatrace_extension_snmp_generic_arista_device`=\
+                    =$(entityId)}"
+                - metricSelector: "com.dynatrace.extension.snmp-generic-arista-device.snmp.in.bad\
+                    .versions.count:splitBy(\"dt.entity.snmp:com_dynatrace_exte\
+                    nsion_snmp_generic_arista_device\")"
+                  dqlQuery: "timeseries
+                    versions=sum(`com.dynatrace.extension.snmp-generic-arista-d\
+                    evice.snmp.in.bad.versions.count`),by:{`dt.entity.snmp:com_\
+                    dynatrace_extension_snmp_generic_arista_device`},filter:{`d\
+                    t.entity.snmp:com_dynatrace_extension_snmp_generic_arista_d\
+                    evice`==$(entityId)}"
+              visualization:
+                themeColor: "PURPLE"
+                seriesType: "AREA"
+          - displayName: "SNMP Messages"
+            visualizationType: "GRAPH_CHART"
+            graphChartConfig:
+              metrics:
+                - metricSelector: "com.dynatrace.extension.snmp-generic-arista-device.snmp.in.pkt\
+                    s.count:splitBy(\"dt.entity.snmp:com_dynatrace_extension_sn\
+                    mp_generic_arista_device\")"
+                  dqlQuery: "timeseries
+                    count=sum(`com.dynatrace.extension.snmp-generic-arista-devi\
+                    ce.snmp.in.pkts.count`),by:{`dt.entity.snmp:com_dynatrace_e\
+                    xtension_snmp_generic_arista_device`},filter:{`dt.entity.sn\
+                    mp:com_dynatrace_extension_snmp_generic_arista_device`==$(e\
+                    ntityId)}"
+          - displayName: "PDU Problems"
+            visualizationType: "GRAPH_CHART"
+            graphChartConfig:
+              visualization:
+                themeColor: "RED"
+                seriesType: "COLUMN"
+              metrics:
+                - metricSelector: "com.dynatrace.extension.snmp-generic-arista-device.snmp.in.bad\
+                    .values.count:splitBy(\"dt.entity.snmp:com_dynatrace_extens\
+                    ion_snmp_generic_arista_device\")"
+                  dqlQuery: "timeseries
+                    count=sum(`com.dynatrace.extension.snmp-generic-arista-devi\
+                    ce.snmp.in.bad.values.count`),by:{`dt.entity.snmp:com_dynat\
+                    race_extension_snmp_generic_arista_device`},filter:{`dt.ent\
+                    ity.snmp:com_dynatrace_extension_snmp_generic_arista_device\
+                    `==$(entityId)}"
+                - metricSelector: "com.dynatrace.extension.snmp-generic-arista-device.snmp.in.nos\
+                    uchnames.count:splitBy(\"dt.entity.snmp:com_dynatrace_exten\
+                    sion_snmp_generic_arista_device\")"
+                  dqlQuery: "timeseries
+                    count=sum(`com.dynatrace.extension.snmp-generic-arista-devi\
+                    ce.snmp.in.nosuchnames.count`),by:{`dt.entity.snmp:com_dyna\
+                    trace_extension_snmp_generic_arista_device`},filter:{`dt.en\
+                    tity.snmp:com_dynatrace_extension_snmp_generic_arista_devic\
+                    e`==$(entityId)}"
+          - displayName: "Community Problems"
+            visualizationType: "GRAPH_CHART"
+            graphChartConfig:
+              visualization:
+                themeColor: "DEFAULT"
+                seriesType: "AREA"
+              metrics:
+                - metricSelector: "com.dynatrace.extension.snmp-generic-arista-device.snmp.in.bad\
+                    .community.uses.count:splitBy(\"dt.entity.snmp:com_dynatrac\
+                    e_extension_snmp_generic_arista_device\")"
+                  dqlQuery: "timeseries
+                    count=sum(`com.dynatrace.extension.snmp-generic-arista-devi\
+                    ce.snmp.in.bad.community.uses.count`),by:{`dt.entity.snmp:c\
+                    om_dynatrace_extension_snmp_generic_arista_device`},filter:\
+                    {`dt.entity.snmp:com_dynatrace_extension_snmp_generic_arist\
+                    a_device`==$(entityId)}"
+                - metricSelector: "com.dynatrace.extension.snmp-generic-arista-device.snmp.in.bad\
+                    .community.names.count:splitBy(\"dt.entity.snmp:com_dynatra\
+                    ce_extension_snmp_generic_arista_device\")"
+                  dqlQuery: "timeseries
+                    count=sum(`com.dynatrace.extension.snmp-generic-arista-devi\
+                    ce.snmp.in.bad.community.names.count`),by:{`dt.entity.snmp:\
+                    com_dynatrace_extension_snmp_generic_arista_device`},filter\
+                    :{`dt.entity.snmp:com_dynatrace_extension_snmp_generic_aris\
+                    ta_device`==$(entityId)}"
+      - key: "network_stats"
+        target: "BOTH"
+        mode: "NORMAL"
+        displayName: "Network Statistics"
+        description: "Populated from IF-MIB and TCP/UDP-MIB"
+        hideEmptyCharts: true
+        numberOfVisibleCharts: 4
+        chartsInRow: 2
+        charts:
+          - displayName: "Network Interfaces Traffic"
+            conditions:
+              - "metricAvailable|metric=com.dynatrace.extension.snmp-generic-ar\
+                ista-device.if.hc.out.octets.count:filter(in(\"dt.entity.snmp:c\
+                om_dynatrace_extension_snmp_generic_arista_device\",
+                entitySelector(\"entityId($(entityId))\")))|lastWrittenWithinDa\
+                ys=5"
+            visualizationType: "GRAPH_CHART"
+            graphChartConfig:
+              metrics:
+                - metricSelector: "func:com.dynatrace.extension.snmp-generic-arista-device.if.hc.\
+                    out.octets.bitpersec:splitBy()"
+                  dqlQuery: "timeseries
+                    count=sum(`com.dynatrace.extension.snmp-generic-arista-devi\
+                    ce.if.hc.out.octets.count`),
+
+                    \ 
+                    by:{`dt.entity.snmp:com_dynatrace_extension_snmp_generic_ar\
+                    ista_device`},
+
+                    \ 
+                    filter:{`dt.entity.snmp:com_dynatrace_extension_snmp_generi\
+                    c_arista_device`==$(entityId)}
+
+                    \  | fieldsAdd expression=count[]*8/toDouble(interval/1s)
+
+                    \  | fieldsRemove count
+
+                    \  | summarize
+                    expression=sum(expression[]),interval=takeAny(interval),tim\
+                    eframe=takeAny(timeframe),
+
+                    \    by:{}\n"
+                  visualization:
+                    displayName: "Interface outgoing traffic (high capacity)"
+                - metricSelector: "func:com.dynatrace.extension.snmp-generic-arista-device.if.hc.\
+                    in.octets.bitpersec:splitBy()"
+                  dqlQuery: "timeseries
+                    count=sum(`com.dynatrace.extension.snmp-generic-arista-devi\
+                    ce.if.hc.in.octets.count`),
+
+                    \ 
+                    by:{`dt.entity.snmp:com_dynatrace_extension_snmp_generic_ar\
+                    ista_device`},
+
+                    \ 
+                    filter:{`dt.entity.snmp:com_dynatrace_extension_snmp_generi\
+                    c_arista_device`==$(entityId)}
+
+                    \  | fieldsAdd expression=count[]*8/toDouble(interval/1s)
+
+                    \  | fieldsRemove count
+
+                    \  | summarize
+                    expression=sum(expression[]),interval=takeAny(interval),tim\
+                    eframe=takeAny(timeframe),
+
+                    \    by:{}\n"
+                  visualization:
+                    displayName: "Interface incoming traffic (high capacity)"
+          - displayName: "Interfaces Bandwidth Utilization"
+            conditions:
+              - "metricAvailable|metric=com.dynatrace.extension.snmp-generic-ar\
+                ista-device.if.hc.in.octets.count:filter(in(\"dt.entity.snmp:co\
+                m_dynatrace_extension_snmp_generic_arista_device\",
+                entitySelector(\"entityId($(entityId))\")))|lastWrittenWithinDa\
+                ys=5"
+            visualizationType: "GRAPH_CHART"
+            graphChartConfig:
+              metrics:
+                - metricSelector: "func:com.dynatrace.extension.snmp-generic-arista-device.if.ban\
+                    dwidth:splitBy()"
+                  dqlQuery: "timeseries
+                    in.octets.count=sum(`com.dynatrace.extension.snmp-generic-a\
+                    rista-device.if.hc.in.octets.count`),out.octets.count=sum(`\
+                    com.dynatrace.extension.snmp-generic-arista-device.if.hc.ou\
+                    t.octets.count`),highspeed=avg(`com.dynatrace.extension.snm\
+                    p-generic-arista-device.if.highspeed`),
+
+                    \ 
+                    by:{if.operstatus,sys.contact,device.address,`dt.entity.snm\
+                    p:com_dynatrace_extension_snmp_generic_arista_network_inter\
+                    face`,dt.metrics.source,if.speed,device.port,if.idx,if.high\
+                    speed,if.type,`dt.entity.snmp:com_dynatrace_extension_snmp_\
+                    generic_arista_device`,if.descr,device.name,if.adminstatus,\
+                    device,if.mtu,if.promiscuousmode,sys.name},
+
+                    \ 
+                    filter:{`dt.entity.snmp:com_dynatrace_extension_snmp_generi\
+                    c_arista_device`==$(entityId)}
+
+                    \  | fieldsAdd
+                    expression=(((in.octets.count[]*8)+(out.octets.count[]*8))/\
+                    (highspeed[]*1000000))*100/toDouble(interval/1s)
+
+                    \  | fieldsRemove in.octets.count,out.octets.count,highspeed
+
+                    \  | summarize
+                    expression=sum(expression[]),interval=takeAny(interval),tim\
+                    eframe=takeAny(timeframe),
+
+                    \    by:{}\n"
+                  visualization:
+                    displayName: "Interface bandwidth utilization"
+          - displayName: "Overall TCP & UDP Traffic"
+            conditions:
+              - "metricAvailable|metric=com.dynatrace.extension.snmp-generic-ar\
+                ista-device.udp.hc.in.datagrams.count:filter(in(\"dt.entity.snm\
+                p:com_dynatrace_extension_snmp_generic_arista_device\",
+                entitySelector(\"entityId($(entityId))\")))|lastWrittenWithinDa\
+                ys=5"
+            visualizationType: "GRAPH_CHART"
+            graphChartConfig:
+              metrics:
+                - metricSelector: "func:com.dynatrace.extension.snmp-generic-arista-device.totalt\
+                    raffic:splitBy()"
+                  dqlQuery: "timeseries
+                    in.datagrams.count=sum(`com.dynatrace.extension.snmp-generi\
+                    c-arista-device.udp.hc.in.datagrams.count`),out.datagrams.c\
+                    ount=sum(`com.dynatrace.extension.snmp-generic-arista-devic\
+                    e.udp.hc.out.datagrams.count`),in.segs.count=sum(`com.dynat\
+                    race.extension.snmp-generic-arista-device.tcp.hc.in.segs.co\
+                    unt`),out.segs.count=sum(`com.dynatrace.extension.snmp-gene\
+                    ric-arista-device.tcp.hc.out.segs.count`),
+
+                    \ 
+                    by:{`dt.entity.snmp:com_dynatrace_extension_snmp_generic_ar\
+                    ista_device`,sys.contact,device.address,device.name,dt.metr\
+                    ics.source,device.port,device,sys.name},
+
+                    \ 
+                    filter:{`dt.entity.snmp:com_dynatrace_extension_snmp_generi\
+                    c_arista_device`==$(entityId)}
+
+                    \  | fieldsAdd
+                    expression=in.datagrams.count[]+out.datagrams.count[]+in.se\
+                    gs.count[]+out.segs.count[]
+
+                    \  | fieldsRemove
+                    in.datagrams.count,out.datagrams.count,in.segs.count,out.se\
+                    gs.count\n"
+                  visualization:
+                    displayName: "Overall TCP and UDP traffic"
+          - displayName: "TCP traffic"
+            conditions:
+              - "metricAvailable|metric=com.dynatrace.extension.snmp-generic-ar\
+                ista-device.tcp.hc.in.segs.count:filter(in(\"dt.entity.snmp:com\
+                _dynatrace_extension_snmp_generic_arista_device\",
+                entitySelector(\"entityId($(entityId))\")))|lastWrittenWithinDa\
+                ys=5"
+            visualizationType: "GRAPH_CHART"
+            graphChartConfig:
+              metrics:
+                - metricSelector: "com.dynatrace.extension.snmp-generic-arista-device.tcp.hc.in.s\
+                    egs.count:splitBy(\"dt.entity.snmp:com_dynatrace_extension_\
+                    snmp_generic_arista_device\")"
+                  dqlQuery: "timeseries
+                    count=sum(`com.dynatrace.extension.snmp-generic-arista-devi\
+                    ce.tcp.hc.in.segs.count`),
+
+                    \ 
+                    by:{`dt.entity.snmp:com_dynatrace_extension_snmp_generic_ar\
+                    ista_device`,sys.contact,device.address,device.name,dt.metr\
+                    ics.source,device.port,device,sys.name},
+
+                    \ 
+                    filter:{`dt.entity.snmp:com_dynatrace_extension_snmp_generi\
+                    c_arista_device`==$(entityId)}\n"
+                  visualization:
+                    displayName: "TCP segments received"
+                - metricSelector: "com.dynatrace.extension.snmp-generic-arista-device.tcp.hc.out.\
+                    segs.count:splitBy(\"dt.entity.snmp:com_dynatrace_extension\
+                    _snmp_generic_arista_device\")"
+                  dqlQuery: "timeseries
+                    count=sum(`com.dynatrace.extension.snmp-generic-arista-devi\
+                    ce.tcp.hc.out.segs.count`),
+                    by:{`dt.entity.snmp:com_dynatrace_extension_snmp_generic_ar\
+                    ista_device`,sys.contact,device.address,device.name,dt.metr\
+                    ics.source,device.port,device,sys.name},
+                    filter:{`dt.entity.snmp:com_dynatrace_extension_snmp_generi\
+                    c_arista_device`==$(entityId)}\n"
+                  visualization:
+                    displayName: "TCP segments sent"
+      - key: "device_stats"
+        target: "BOTH"
+        mode: "NORMAL"
+        displayName: "Device Statistics"
+        description: "Populated from HOST-RESOURCES-MIB"
+        hideEmptyCharts: true
+        numberOfVisibleCharts: 2
+        charts:
+          - displayName: "CPU utilization"
+            visualizationType: "GRAPH_CHART"
+            graphChartConfig:
+              metrics:
+                - metricSelector: "com.dynatrace.extension.snmp-generic-arista-device.cpu.total.1\
+                    min:splitBy(\"dt.entity.snmp:com_dynatrace_extension_snmp_g\
+                    eneric_arista_device\")"
+                  dqlQuery: "timeseries
+                    cpu=avg(`com.dynatrace.extension.snmp-generic-arista-device\
+                    .cpu.total.1min`),by:{`dt.entity.snmp:com_dynatrace_extensi\
+                    on_snmp_generic_arista_device`},filter:{`dt.entity.snmp:com\
+                    _dynatrace_extension_snmp_generic_arista_device`==$(entityI\
+                    d)}"
+          - displayName: "Memory usage"
+            visualizationType: "GRAPH_CHART"
+            graphChartConfig:
+              metrics:
+                - metricSelector: "com.dynatrace.extension.snmp-generic-arista-device.memory.used\
+                    :splitBy(\"dt.entity.snmp:com_dynatrace_extension_snmp_gene\
+                    ric_arista_device\")"
+                  dqlQuery: "timeseries
+                    used=avg(`com.dynatrace.extension.snmp-generic-arista-devic\
+                    e.memory.used`),by:{`dt.entity.snmp:com_dynatrace_extension\
+                    _snmp_generic_arista_device`},filter:{`dt.entity.snmp:com_d\
+                    ynatrace_extension_snmp_generic_arista_device`==$(entityId)\
+                    }"
+                - metricSelector: "com.dynatrace.extension.snmp-generic-arista-device.memory.tota\
+                    l:splitBy(\"dt.entity.snmp:com_dynatrace_extension_snmp_gen\
+                    eric_arista_device\")"
+                  dqlQuery: "timeseries
+                    total=avg(`com.dynatrace.extension.snmp-generic-arista-devi\
+                    ce.memory.total`),by:{`dt.entity.snmp:com_dynatrace_extensi\
+                    on_snmp_generic_arista_device`},filter:{`dt.entity.snmp:com\
+                    _dynatrace_extension_snmp_generic_arista_device`==$(entityI\
+                    d)}"
+      - key: "device_health"
+        target: "BOTH"
+        mode: "NORMAL"
+        displayName: "Device Health"
+        description: "Populated from Arista Enterprise MIBs"
+        numberOfVisibleCharts: 3
+        hideEmptyCharts: true
+        charts:
+          - displayName: "Temperature sensors"
+            visualizationType: "GRAPH_CHART"
+            graphChartConfig:
+              metrics:
+                - metricSelector: "com.dynatrace.extension.snmp-generic-arista-device.temperature\
+                    .sensor.value:splitBy(entPhysicalDescr)"
+                  dqlQuery: "timeseries
+                    val=avg(`com.dynatrace.extension.snmp-generic-arista-device\
+                    .temperature.sensor.value`),by:{entPhysicalDescr}"
+            conditions:
+              - "metricAvailable|metric=com.dynatrace.extension.snmp-generic-ar\
+                ista-device.temperature.sensor.value:filter(in(\"dt.entity.snmp\
+                :com_dynatrace_extension_snmp_generic_arista_device\",
+                entitySelector(\"entityId($(entityId))\")))|lastWrittenWithinDa\
+                ys=5"
+          - displayName: "Fan status"
+            visualizationType: "GRAPH_CHART"
+            graphChartConfig:
+              metrics:
+                - metricSelector: "com.dynatrace.extension.snmp-generic-arista-device.fan.status:\
+                    splitBy(\"entPhysicalDescr\")"
+                  dqlQuery: "timeseries
+                    status=avg(`com.dynatrace.extension.snmp-generic-arista-dev\
+                    ice.fan.status`),by:{entPhysicalDescr}"
+            conditions:
+              - "metricAvailable|metric=com.dynatrace.extension.snmp-generic-ar\
+                ista-device.fan.status:filter(in(\"dt.entity.snmp:com_dynatrace\
+                _extension_snmp_generic_arista_device\",
+                entitySelector(\"entityId($(entityId))\")))|lastWrittenWithinDa\
+                ys=5"
+          - displayName: "Power supply status"
+            visualizationType: "GRAPH_CHART"
+            graphChartConfig:
+              metrics:
+                - metricSelector: "com.dynatrace.extension.snmp-generic-arista-device.power.suppl\
+                    y.status:splitBy(\"entPhysicalDescr\")"
+                  dqlQuery: "timeseries
+                    status=avg(`com.dynatrace.extension.snmp-generic-arista-dev\
+                    ice.power.supply.status`),by:{entPhysicalDescr}"
+            conditions:
+              - "metricAvailable|metric=com.dynatrace.extension.snmp-generic-ar\
+                ista-device.power.supply.status:filter(in(\"dt.entity.snmp:com_\
+                dynatrace_extension_snmp_generic_arista_device\",
+                entitySelector(\"entityId($(entityId))\")))|lastWrittenWithinDa\
+                ys=5"

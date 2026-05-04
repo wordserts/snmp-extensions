@@ -1,0 +1,1216 @@
+name: "custom:viptela-networks"
+minDynatraceVersion: "1.303.0"
+author:
+  name: "Custom Extensions Creator App"
+version: "1.0.10"
+vars:
+  - id: "ext.activationtag"
+    displayName: "Extension activation tag"
+    type: "text"
+  - id: "if_name"
+    type: "text"
+    displayName: "Pattern to filter capturing of Interfaces by Name"
+    maxLength: 5000
+  - id: "if_admin_status"
+    type: "text"
+    displayName: "Pattern to filter capturing of Interfaces by Admin Status"
+    maxLength: 5000
+  - id: "if_oper_status"
+    type: "text"
+    displayName: "Pattern to filter capturing of Interfaces by Operational Status"
+    maxLength: 5000
+  - id: "if_alias"
+    type: "text"
+    displayName: "Pattern to filter capturing of Interfaces by Alias"
+    maxLength: 5000
+  - id: "if_type"
+    type: "text"
+    displayName: "Pattern to filter capturing of Interfaces by Type"
+    maxLength: 5000
+metrics:
+  - key: "com.dynatrace.extension.snmp-generic-viptela-device.entity_attributes"
+    metadata:
+      displayName: "Device entity attributes"
+      description: "Constant value of 1 used for reporting entity attributes at a
+        lower frequency"
+      unit: "Unspecified"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_viptela_device"
+  - key: "com.dynatrace.extension.network_device.cpu_usage"
+    metadata:
+      displayName: "CPU Usage"
+      description: "CPU utilization percentage for user processes"
+      unit: "Percent"
+      sourceEntityType: "network:device"
+  - key: "com.dynatrace.extension.network_device.memory_used"
+    metadata:
+      displayName: "Memory Used"
+      description: "Total memory currently in use"
+      unit: "KiloByte"
+      sourceEntityType: "network:device"
+  - key: "com.dynatrace.extension.network_device.memory_total"
+    metadata:
+      displayName: "Memory Total"
+      description: "Total memory installed"
+      unit: "KiloByte"
+      sourceEntityType: "network:device"
+  - key: "com.dynatrace.extension.snmp-generic-viptela-device.cpu.user"
+    metadata:
+      displayName: "CPU User"
+      description: "CPU utilization percentage for user processes"
+      unit: "Percent"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_viptela_device"
+  - key: "com.dynatrace.extension.snmp-generic-viptela-device.cpu.system"
+    metadata:
+      displayName: "CPU System"
+      description: "CPU utilization percentage for system processes"
+      unit: "Percent"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_viptela_device"
+  - key: "com.dynatrace.extension.snmp-generic-viptela-device.cpu.idle"
+    metadata:
+      displayName: "CPU Idle"
+      description: "CPU idle percentage"
+      unit: "Percent"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_viptela_device"
+  - key: "func:com.dynatrace.extension.snmp-generic-viptela-device.cpu.total"
+    query:
+      metricSelector: "(100) - (com.dynatrace.extension.snmp-generic-viptela-device.cpu.idle)"
+    metadata:
+      displayName: "CPU Utilization Total"
+      description: "Total CPU utilization percentage (100 - idle)"
+      unit: "Percent"
+  - key: "com.dynatrace.extension.snmp-generic-viptela-device.memory.total"
+    metadata:
+      displayName: "Memory Total"
+      description: "Total memory installed (in KB)"
+      unit: "KiloByte"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_viptela_device"
+  - key: "com.dynatrace.extension.snmp-generic-viptela-device.memory.used"
+    metadata:
+      displayName: "Memory Used"
+      description: "Total memory currently in use (in KB)"
+      unit: "KiloByte"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_viptela_device"
+  - key: "com.dynatrace.extension.snmp-generic-viptela-device.memory.free"
+    metadata:
+      displayName: "Memory Free"
+      description: "Total memory available (in KB)"
+      unit: "KiloByte"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_viptela_device"
+  - key: "func:com.dynatrace.extension.snmp-generic-viptela-device.memory.utilizati\
+      on"
+    query:
+      metricSelector: "((com.dynatrace.extension.snmp-generic-viptela-device.memory.u\
+        sed) /
+        (com.dynatrace.extension.snmp-generic-viptela-device.memory.total)) *
+        (100)"
+    metadata:
+      displayName: "Memory Utilization"
+      description: "Memory utilization percentage"
+      unit: "Percent"
+  - key: "com.dynatrace.extension.snmp-generic-viptela-device.sys.uptime"
+    metadata:
+      displayName: "Time since the last re-start"
+      description: "The time (in hundredths of a second) since the network management
+        portion of the system was last re-initialized"
+      unit: "Unspecified"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_viptela_device"
+  - key: "func:com.dynatrace.extension.snmp-generic-viptela-device.sys.uptime.milli\
+      s"
+    query:
+      metricSelector: "(com.dynatrace.extension.snmp-generic-viptela-device.sys.uptime) * (10)"
+    metadata:
+      displayName: "Time since the last re-start"
+      description: "The time (in milliseconds) since the network management portion of
+        the system was last re-initialized"
+      unit: "MilliSecond"
+  - key: "com.dynatrace.extension.snmp-generic-viptela-device.if.lastchange"
+    metadata:
+      displayName: "Last interface status change"
+      description: "Value of 'sysUpTime' when the interface entered its current state"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_viptela_network_interface"
+  - key: "com.dynatrace.extension.snmp-generic-viptela-device.if.in.octets.count"
+    metadata:
+      displayName: "Octets received"
+      description: "The total number of octets received on the interface including
+        framing characters"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_viptela_network_interface"
+  - key: "com.dynatrace.extension.snmp-generic-viptela-device.if.hc.in.octets.count"
+    metadata:
+      displayName: "Octets received (high capacity)"
+      description: "The total number of octets received on the interface including
+        framing characters. This metric uses 64 bit counter and should be used
+        for highspeed devices."
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_viptela_network_interface"
+  - key: "com.dynatrace.extension.snmp-generic-viptela-device.if.in.errors.count"
+    metadata:
+      displayName: "Inbound errors"
+      description: "Number of inbound packets/transmission units with errors"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_viptela_network_interface"
+  - key: "com.dynatrace.extension.snmp-generic-viptela-device.if.in.discards.count"
+    metadata:
+      displayName: "Inbound discards"
+      description: "Number of inbound packets discarded"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_viptela_network_interface"
+  - key: "com.dynatrace.extension.snmp-generic-viptela-device.if.out.octets.count"
+    metadata:
+      displayName: "Octets transmitted"
+      description: "The total number of octets transmitted out of the interface
+        including framing characters"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_viptela_network_interface"
+  - key: "com.dynatrace.extension.snmp-generic-viptela-device.if.hc.out.octets.coun\
+      t"
+    metadata:
+      displayName: "Octets transmitted (high capacity)"
+      description: "The total number of octets transmitted out of the interface
+        including framing characters. This metric uses 64 bit counter and should
+        be used for highspeed devices."
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_viptela_network_interface"
+  - key: "com.dynatrace.extension.snmp-generic-viptela-device.if.out.errors.count"
+    metadata:
+      displayName: "Outbound errors"
+      description: "Number of outbound packets/transmission units with errors"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_viptela_network_interface"
+  - key: "com.dynatrace.extension.snmp-generic-viptela-device.if.out.discards.count"
+    metadata:
+      displayName: "Outbound discards"
+      description: "Number of outbound packets discarded"
+      unit: "Count"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_viptela_network_interface"
+  - key: "com.dynatrace.extension.snmp-generic-viptela-device.if.highspeed"
+    metadata:
+      displayName: "Interface speed"
+      description: "Speed of the network interface in MegaBits per second."
+      unit: "MegaBitPerSecond"
+      sourceEntityType: "snmp:com_dynatrace_extension_snmp_generic_viptela_network_interface"
+  - key: "func:com.dynatrace.extension.snmp-generic-viptela-device.if.in.octets.bit\
+      persec"
+    query:
+      metricSelector: "((com.dynatrace.extension.snmp-generic-viptela-device.if.in.oc\
+        tets.count) * (8)):rate(1s)"
+    metadata:
+      displayName: "Interface incoming traffic"
+      description: "Incoming network traffic on interface in bits per second."
+      unit: "BitPerSecond"
+  - key: "func:com.dynatrace.extension.snmp-generic-viptela-device.if.hc.in.octets.\
+      bitpersec"
+    query:
+      metricSelector: "((com.dynatrace.extension.snmp-generic-viptela-device.if.hc.in\
+        .octets.count) * (8)):rate(1s)"
+    metadata:
+      displayName: "Interface incoming traffic (high capacity)"
+      description: "Incoming network traffic on interface in bits per second. This
+        metric uses high capacity octet metrics and should be used for highspeed
+        devices."
+      unit: "BitPerSecond"
+  - key: "func:com.dynatrace.extension.snmp-generic-viptela-device.if.out.octets.bi\
+      tpersec"
+    query:
+      metricSelector: "((com.dynatrace.extension.snmp-generic-viptela-device.if.out.o\
+        ctets.count) * (8)):rate(1s)"
+    metadata:
+      displayName: "Interface outgoing traffic"
+      description: "Outgoing network traffic on interface in bits per second."
+      unit: "BitPerSecond"
+  - key: "func:com.dynatrace.extension.snmp-generic-viptela-device.if.hc.out.octets\
+      .bitpersec"
+    query:
+      metricSelector: "((com.dynatrace.extension.snmp-generic-viptela-device.if.hc.ou\
+        t.octets.count) * (8)):rate(1s)"
+    metadata:
+      displayName: "Interface outgoing traffic (high capacity)"
+      description: "Outgoing network traffic on interface in bits per second. This
+        metric uses high capacity octet metrics and should be used for highspeed
+        devices."
+      unit: "BitPerSecond"
+  - key: "func:com.dynatrace.extension.snmp-generic-viptela-device.if.bandwidth"
+    query:
+      metricSelector: "((((((com.dynatrace.extension.snmp-generic-viptela-device.if.h\
+        c.in.octets.count) *
+        (8)):rate(1s))+(((com.dynatrace.extension.snmp-generic-viptela-device.i\
+        f.hc.out.octets.count) *
+        (8)):rate(1s)))/((com.dynatrace.extension.snmp-generic-viptela-device.i\
+        f.highspeed) * 1000000)) * (100))"
+    metadata:
+      displayName: "Interface bandwidth utilization"
+      description: "Bandwidth utilization on interface. Computed as sum of incoming
+        and outgoing traffic divided by interface speed. Presented as
+        percentage."
+      unit: "Percent"
+  - key: "func:com.dynatrace.extension.snmp-generic-viptela-device.if.in.bandwidth"
+    query:
+      metricSelector: "(((((com.dynatrace.extension.snmp-generic-viptela-device.if.hc\
+        .in.octets.count) *
+        (8)):rate(1s))/((com.dynatrace.extension.snmp-generic-viptela-device.if\
+        .highspeed) * (1000000))) * (100))"
+    metadata:
+      displayName: "Inbound bandwidth utilization"
+      description: "Inbound bandwidth utilization on interface. Computed as sum of
+        incoming traffic divided by interface speed. Presented as percentage."
+      unit: "Percent"
+  - key: "func:com.dynatrace.extension.snmp-generic-viptela-device.if.out.bandwidth"
+    query:
+      metricSelector: "(((((com.dynatrace.extension.snmp-generic-viptela-device.if.hc\
+        .out.octets.count) *
+        (8)):rate(1s))/((com.dynatrace.extension.snmp-generic-viptela-device.if\
+        .highspeed) * (1000000))) * (100))"
+    metadata:
+      displayName: "Outbound bandwidth utilization"
+      description: "Outbound bandwidth utilization on interface. Computed as sum of
+        outgoing traffic divided by interface speed. Presented as percentage."
+      unit: "Percent"
+snmp:
+  - group: "generic-viptela-device-attributes"
+    interval:
+      minutes: 30
+    dimensions:
+      - key: "sys.name"
+        value: "oid:1.3.6.1.2.1.1.5.0"
+      - key: "sys.contact"
+        value: "oid:1.3.6.1.2.1.1.4.0"
+      - key: "activation.tag"
+        value: "var:ext.activationtag"
+      - key: "device.port"
+        value: "this:device.port"
+      - key: "lldp.chassis.id"
+        value: "$inetAddress(oid:1.0.8802.1.1.2.1.3.1.0, oid:1.0.8802.1.1.2.1.3.2.0)"
+    subgroups:
+      - subgroup: "Device Info for entity attributes"
+        table: false
+        dimensions:
+          - key: "sys.description"
+            value: "oid:1.3.6.1.2.1.1.1.0"
+          - key: "sys.objectid"
+            value: "oid:1.3.6.1.2.1.1.2.0"
+          - key: "sys.location"
+            value: "oid:1.3.6.1.2.1.1.6.0"
+          - key: "monitoring.mode"
+            value: "const:Extension"
+          - key: "device.type"
+            value: "const:viptela"
+          - key: "sys.services"
+            value: "oid:1.3.6.1.2.1.1.7.0"
+          - key: "if.count"
+            value: "oid:1.3.6.1.2.1.2.1.0"
+          - key: "software_version"
+            value: "oid:1.3.6.1.4.1.41916.11.1.2"
+        metrics:
+          - key: "com.dynatrace.extension.snmp-generic-viptela-device.entity_attributes"
+            value: "const:1"
+        interval:
+          minutes: 30
+  - group: "generic-network-topology"
+    interval:
+      minutes: 10
+    dimensions:
+      - key: "sys.name"
+        value: "oid:1.3.6.1.2.1.1.5.0"
+      - key: "lldp.chassis.id"
+        value: "$inetAddress(oid:1.0.8802.1.1.2.1.3.1.0, oid:1.0.8802.1.1.2.1.3.2.0)"
+    subgroups:
+      - subgroup: "neighbor-discovery"
+        featureSet: "neighbor-discovery"
+        table: true
+        dimensions:
+          - key: "neighbor.chassis.id"
+            value: "$inetAddress(oid:1.0.8802.1.1.2.1.4.1.1.4,
+              oid:1.0.8802.1.1.2.1.4.1.1.5)"
+          - key: "neighbor.chassistype"
+            value: "oid:1.0.8802.1.1.2.1.4.1.1.4"
+          - key: "neighbor.port.id"
+            value: "$inetAddress(oid:1.0.8802.1.1.2.1.4.1.1.6,
+              oid:1.0.8802.1.1.2.1.4.1.1.7)"
+          - key: "neighbor.porttype"
+            value: "oid:1.0.8802.1.1.2.1.4.1.1.6"
+          - key: "neighbor.port.desc"
+            value: "oid:1.0.8802.1.1.2.1.4.1.1.8"
+          - key: "neighbor.sys.name"
+            value: "oid:1.0.8802.1.1.2.1.4.1.1.9"
+          - key: "neighbor.sys.desc"
+            value: "oid:1.0.8802.1.1.2.1.4.1.1.10"
+          - key: "neighbor.cap.support"
+            value: "oid:1.0.8802.1.1.2.1.4.1.1.11"
+          - key: "neighbor.cap.enabled"
+            value: "oid:1.0.8802.1.1.2.1.4.1.1.12"
+        metrics:
+          - key: "com.dynatrace.extension.network_device.lldp_neighbor"
+            value: "const:1"
+        interval:
+          minutes: 10
+      - subgroup: "Uptime"
+        dimensions:
+          - key: "sys.description"
+            value: "oid:1.3.6.1.2.1.1.1.0"
+          - key: "sys.contact"
+            value: "oid:1.3.6.1.2.1.1.4.0"
+          - key: "sys.objectid"
+            value: "oid:1.3.6.1.2.1.1.2.0"
+          - key: "sys.location"
+            value: "oid:1.3.6.1.2.1.1.6.0"
+          - key: "monitoring.mode"
+            value: "const:Extension"
+          - key: "device.type"
+            value: "const:viptela"
+        metrics:
+          - key: "com.dynatrace.extension.network_device.sysuptime"
+            value: "oid:1.3.6.1.2.1.1.3.0"
+        interval:
+          minutes: 10
+      - subgroup: "Network device CPU and Memory"
+        table: false
+        metrics:
+          - key: "com.dynatrace.extension.network_device.cpu_usage"
+            value: "oid:1.3.6.1.4.1.41916.11.1.14.0"
+            type: "gauge"
+          - key: "com.dynatrace.extension.network_device.memory_used"
+            value: "oid:1.3.6.1.4.1.41916.11.1.18.0"
+            type: "gauge"
+          - key: "com.dynatrace.extension.network_device.memory_free"
+            value: "oid:1.3.6.1.4.1.41916.11.1.19.0"
+            type: "gauge"
+          - key: "com.dynatrace.extension.network_device.memory_total"
+            value: "oid:1.3.6.1.4.1.41916.11.1.17.0"
+            type: "gauge"
+        interval:
+          minutes: 10
+      - subgroup: "Network interface"
+        table: true
+        dimensions:
+          - key: "if.name"
+            value: "oid:1.3.6.1.2.1.2.2.1.2"
+            filter: "var:if_name"
+          - key: "if.type"
+            value: "oid:1.3.6.1.2.1.2.2.1.3"
+            filter: "var:if_type"
+          - key: "oper.status"
+            value: "oid:1.3.6.1.2.1.2.2.1.8"
+            filter: "var:if_oper_status"
+          - key: "admin.status"
+            value: "oid:1.3.6.1.2.1.2.2.1.7"
+            filter: "var:if_admin_status"
+          - key: "if.alias"
+            value: "oid:1.3.6.1.2.1.31.1.1.1.18"
+            filter: "var:if_alias"
+          - key: "mac.address"
+            value: "oid:1.3.6.1.2.1.2.2.1.6"
+          - key: "if.speed"
+            value: "oid:1.3.6.1.2.1.31.1.1.1.15"
+        metrics:
+          - key: "com.dynatrace.extension.network_device.if.bytes_in.count"
+            value: "oid:1.3.6.1.2.1.31.1.1.1.6"
+            type: "count"
+          - key: "com.dynatrace.extension.network_device.if.bytes_out.count"
+            value: "oid:1.3.6.1.2.1.31.1.1.1.10"
+            type: "count"
+          - key: "com.dynatrace.extension.network_device.if.in.errors.count"
+            value: "oid:1.3.6.1.2.1.2.2.1.14"
+            type: "count"
+          - key: "com.dynatrace.extension.network_device.if.in.discards.count"
+            value: "oid:1.3.6.1.2.1.2.2.1.13"
+            type: "count"
+          - key: "com.dynatrace.extension.network_device.if.out.errors.count"
+            value: "oid:1.3.6.1.2.1.2.2.1.20"
+            type: "count"
+          - key: "com.dynatrace.extension.network_device.if.out.discards.count"
+            value: "oid:1.3.6.1.2.1.2.2.1.19"
+            type: "count"
+          - key: "com.dynatrace.extension.network_device.if.status"
+            value: "const:1"
+        interval:
+          minutes: 10
+  - group: "viptela-device-data"
+    featureSet: "Control Plane"
+    interval:
+      minutes: 10
+    dimensions:
+      - key: "sys.name"
+        value: "oid:1.3.6.1.2.1.1.5.0"
+      - key: "sys.contact"
+        value: "oid:1.3.6.1.2.1.1.4.0"
+      - key: "activation.tag"
+        value: "var:ext.activationtag"
+      - key: "device.port"
+        value: "this:device.port"
+      - key: "device.type"
+        value: "const:viptela"
+      - key: "monitoring.mode"
+        value: "const:Extension"
+      - key: "lldp.chassis.id"
+        value: "$inetAddress(oid:1.0.8802.1.1.2.1.3.1.0, oid:1.0.8802.1.1.2.1.3.2.0)"
+    metrics:
+      - key: "com.dynatrace.extension.snmp-generic-viptela-device.sys.uptime"
+        value: "oid:1.3.6.1.2.1.1.3.0"
+        type: "gauge"
+    subgroups:
+      - subgroup: "Viptela CPU & Memory"
+        featureSet: "Control Plane"
+        table: false
+        metrics:
+          - key: "com.dynatrace.extension.snmp-generic-viptela-device.cpu.user"
+            value: "oid:1.3.6.1.4.1.41916.11.1.14.0"
+            type: "gauge"
+          - key: "com.dynatrace.extension.snmp-generic-viptela-device.cpu.system"
+            value: "oid:1.3.6.1.4.1.41916.11.1.15.0"
+            type: "gauge"
+          - key: "com.dynatrace.extension.snmp-generic-viptela-device.cpu.idle"
+            value: "oid:1.3.6.1.4.1.41916.11.1.16.0"
+            type: "gauge"
+          - key: "com.dynatrace.extension.snmp-generic-viptela-device.memory.total"
+            value: "oid:1.3.6.1.4.1.41916.11.1.17.0"
+            type: "gauge"
+          - key: "com.dynatrace.extension.snmp-generic-viptela-device.memory.used"
+            value: "oid:1.3.6.1.4.1.41916.11.1.18.0"
+            type: "gauge"
+          - key: "com.dynatrace.extension.snmp-generic-viptela-device.memory.free"
+            value: "oid:1.3.6.1.4.1.41916.11.1.19.0"
+            type: "gauge"
+        interval:
+          minutes: 10
+      - subgroup: "NIC status"
+        featureSet: "Interfaces"
+        table: true
+        dimensions:
+          - key: "if.idx"
+            value: "oid:1.3.6.1.2.1.2.2.1.1"
+          - key: "if.descr"
+            value: "oid:1.3.6.1.2.1.2.2.1.2"
+            filter: "var:if_name"
+          - key: "if.type"
+            value: "oid:1.3.6.1.2.1.2.2.1.3"
+            filter: "var:if_type"
+          - key: "if.mtu"
+            value: "oid:1.3.6.1.2.1.2.2.1.4"
+          - key: "if.speed"
+            value: "oid:1.3.6.1.2.1.2.2.1.5"
+          - key: "if.highspeed"
+            value: "oid:1.3.6.1.2.1.31.1.1.1.15"
+          - key: "if.adminstatus"
+            value: "oid:1.3.6.1.2.1.2.2.1.7"
+            filter: "var:if_admin_status"
+          - key: "if.operstatus"
+            value: "oid:1.3.6.1.2.1.2.2.1.8"
+            filter: "var:if_oper_status"
+          - key: "if.promiscuousmode"
+            value: "oid:1.3.6.1.2.1.31.1.1.1.16"
+          - key: "if.alias"
+            value: "oid:1.3.6.1.2.1.31.1.1.1.18"
+            filter: "var:if_alias"
+          - key: "if.name"
+            value: "oid:1.3.6.1.2.1.31.1.1.1.1"
+          - key: "mac.address"
+            value: "oid:1.3.6.1.2.1.2.2.1.6"
+        metrics:
+          - key: "com.dynatrace.extension.snmp-generic-viptela-device.if.lastchange"
+            value: "oid:1.3.6.1.2.1.2.2.1.9"
+            type: "gauge"
+          - key: "com.dynatrace.extension.snmp-generic-viptela-device.if.highspeed"
+            value: "oid:1.3.6.1.2.1.31.1.1.1.15"
+            type: "gauge"
+          - key: "com.dynatrace.extension.snmp-generic-viptela-device.if.in.octets.count"
+            value: "oid:1.3.6.1.2.1.2.2.1.10"
+            type: "count"
+            featureSet: "Interfaces 32-bit"
+          - key: "com.dynatrace.extension.snmp-generic-viptela-device.if.hc.in.octets.count"
+            value: "oid:1.3.6.1.2.1.31.1.1.1.6"
+            type: "count"
+            featureSet: "Interfaces 64-bit"
+          - key: "com.dynatrace.extension.snmp-generic-viptela-device.if.out.octets.count"
+            value: "oid:1.3.6.1.2.1.2.2.1.16"
+            type: "count"
+            featureSet: "Interfaces 32-bit"
+          - key: "com.dynatrace.extension.snmp-generic-viptela-device.if.hc.out.octets.coun\
+              t"
+            value: "oid:1.3.6.1.2.1.31.1.1.1.10"
+            type: "count"
+            featureSet: "Interfaces 64-bit"
+          - key: "com.dynatrace.extension.snmp-generic-viptela-device.if.in.errors.count"
+            value: "oid:1.3.6.1.2.1.2.2.1.14"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-viptela-device.if.in.discards.count"
+            value: "oid:1.3.6.1.2.1.2.2.1.13"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-viptela-device.if.out.errors.count"
+            value: "oid:1.3.6.1.2.1.2.2.1.20"
+            type: "count"
+          - key: "com.dynatrace.extension.snmp-generic-viptela-device.if.out.discards.count"
+            value: "oid:1.3.6.1.2.1.2.2.1.19"
+            type: "count"
+        interval:
+          minutes: 10
+topology:
+  types:
+    - name: "network:device"
+      displayName: "Network device"
+      enabled: true
+      rules:
+        - idPattern: "network_device_{device.address}"
+          sources:
+            - sourceType: "Metrics"
+              condition: "$eq(com.dynatrace.extension.snmp-generic-viptela-device.sys.uptime)"
+          attributes:
+            - key: "dt.ip_addresses"
+              pattern: "{device.address}"
+              displayName: "IP Address"
+            - key: "dt.listen_ports"
+              pattern: "{device.port}"
+              displayName: "Listen Port"
+            - key: "dt.dns_names"
+              pattern: "{device.name}"
+              displayName: "DNS Names"
+            - key: "devType"
+              pattern: "{device.type}"
+              displayName: "Device Type"
+            - key: "devMonitoringMode"
+              pattern: "{monitoring.mode}"
+              displayName: "Monitoring Mode"
+            - key: "lldpChassisId"
+              pattern: "{lldp.chassis.id}"
+              displayName: "LLDP Chassis ID"
+            - key: "devSysContact"
+              pattern: "{sys.contact}"
+              displayName: "Contact"
+            - key: "dt.security_context"
+              pattern: "{dt.security_context}"
+              displayName: "Security Context"
+          requiredDimensions:
+            - key: "device.name"
+            - key: "device.address"
+            - key: "device.type"
+            - key: "lldp.chassis.id"
+          instanceNamePattern: "{sys.name}"
+        - idPattern: "network_device_{device.address}"
+          sources:
+            - sourceType: "Metrics"
+              condition: "$eq(com.dynatrace.extension.snmp-generic-viptela-device.entity_attr\
+                ibutes)"
+          attributes:
+            - key: "dt.dns_names"
+              pattern: "{sys.name}"
+              displayName: "DNS Names"
+            - key: "devDescription"
+              pattern: "{sys.description}"
+              displayName: "Description"
+            - key: "devSysLocation"
+              pattern: "{sys.location}"
+              displayName: "Location"
+            - key: "devObjectId"
+              pattern: "{sys.objectid}"
+              displayName: "Object ID"
+            - key: "interface_count"
+              pattern: "{if.count}"
+              displayName: "Interface Count"
+            - key: "dt.security_context"
+              pattern: "{dt.security_context}"
+              displayName: "Security Context"
+          requiredDimensions:
+            - key: "sys.name"
+            - key: "sys.description"
+          instanceNamePattern: "{sys.name}"
+        - idPattern: "network_device_{device.address}"
+          sources:
+            - sourceType: "Metrics"
+              condition: "$prefix(com.dynatrace.extension.snmp-generic-viptela-device)"
+          attributes:
+            - key: "dt.security_context"
+              pattern: "{dt.security_context}"
+              displayName: "Security Context"
+          requiredDimensions: []
+          instanceNamePattern: "{sys.name}"
+    - name: "network:interface"
+      displayName: "Network interface"
+      enabled: true
+      rules:
+        - idPattern: "network_interface_{mac.address}_{if.descr}"
+          sources:
+            - sourceType: "Metrics"
+              condition: "$prefix(com.dynatrace.extension.snmp-generic-viptela-device.if)"
+          attributes:
+            - pattern: "{device.address}"
+              key: "dt.ip_addresses"
+              displayName: "Network device address"
+            - pattern: "{if.promiscuousmode}"
+              key: "promiscuousMode"
+              displayName: "PromiscuousMode"
+            - pattern: "{if.speed}"
+              key: "speed"
+              displayName: "Interface Speed"
+            - pattern: "{if.highspeed}"
+              key: "highspeed"
+              displayName: "Interface Speed (Mbps)"
+            - pattern: "{if.type}"
+              key: "type"
+              displayName: "Interface Type"
+            - pattern: "{if.operstatus}"
+              key: "opStatus"
+              displayName: "Operational Status"
+            - pattern: "{if.mtu}"
+              key: "mtu"
+              displayName: "MTU"
+            - pattern: "{if.descr}"
+              key: "description"
+              displayName: "Description"
+            - pattern: "{if.adminstatus}"
+              key: "adminStatus"
+              displayName: "Admin Status"
+            - key: "dt.security_context"
+              pattern: "{dt.security_context}"
+              displayName: "Security Context"
+          requiredDimensions: []
+          instanceNamePattern: "{if.descr}"
+    - name: "snmp:com_dynatrace_extension_snmp_generic_viptela_device"
+      displayName: "Generic SNMP Viptela Device"
+      enabled: true
+      rules:
+        - idPattern: "snmp_generic_viptela_device_{device.address}"
+          sources:
+            - sourceType: "Metrics"
+              condition: "$eq(com.dynatrace.extension.snmp-generic-viptela-device.sys.uptime)"
+          attributes:
+            - pattern: "{sys.description}"
+              key: "system_descr"
+              displayName: "Description"
+            - pattern: "{sys.location}"
+              key: "system_location"
+              displayName: "Location"
+            - pattern: "{if.count}"
+              key: "interface_count"
+              displayName: "Network Interface Count"
+            - pattern: "{software_version}"
+              key: "softwareVersion"
+              displayName: "Software Version"
+            - key: "dt.security_context"
+              pattern: "{dt.security_context}"
+              displayName: "Security Context"
+          requiredDimensions: []
+          instanceNamePattern: "Viptela network device {sys.name} @ {device.address}:{device.port}"
+        - idPattern: "snmp_generic_viptela_device_{device.address}"
+          sources:
+            - sourceType: "Metrics"
+              condition: "$prefix(com.dynatrace.extension.snmp-generic-viptela-device)"
+          attributes:
+            - pattern: "{sys.contact}"
+              key: "system_contact"
+              displayName: "System Contact"
+            - pattern: "{sys.name}"
+              key: "system_name"
+              displayName: "Device Name"
+            - pattern: "{device.address}"
+              key: "dt.ip_addresses"
+              displayName: "Device Address"
+            - pattern: "{device.port}"
+              key: "dt.listen_ports"
+              displayName: "Device Port"
+            - pattern: "{device.name}"
+              key: "dt.dns_names"
+              displayName: "Device DNS Name"
+            - key: "dt.security_context"
+              pattern: "{dt.security_context}"
+              displayName: "Security Context"
+          requiredDimensions: []
+          instanceNamePattern: "Viptela network device {sys.name} @ {device.address}:{device.port}"
+    - name: "snmp:com_dynatrace_extension_snmp_generic_viptela_network_interface"
+      displayName: "Generic SNMP Viptela Device Network Interface"
+      enabled: true
+      rules:
+        - idPattern: "snmp_generic_viptela_network_interface_{device.address}-{if.idx}"
+          sources:
+            - sourceType: "Metrics"
+              condition: "$prefix(com.dynatrace.extension.snmp-generic-viptela-device.if)"
+          attributes:
+            - pattern: "{device.address}"
+              key: "dt.ip_addresses"
+              displayName: "Network device address"
+            - pattern: "{if.alias}"
+              key: "alias"
+              displayName: "Alias"
+            - pattern: "{if.promiscuousmode}"
+              key: "promiscuousMode"
+              displayName: "PromiscuousMode"
+            - pattern: "{if.speed}"
+              key: "speed"
+              displayName: "Interface Speed"
+            - pattern: "{if.highspeed}"
+              key: "highspeed"
+              displayName: "Interface Speed (Mbps)"
+            - pattern: "{if.type}"
+              key: "type"
+              displayName: "Interface Type"
+            - pattern: "{if.operstatus}"
+              key: "opStatus"
+              displayName: "Operational Status"
+            - pattern: "{if.mtu}"
+              key: "mtu"
+              displayName: "MTU"
+            - pattern: "{if.descr}"
+              key: "description"
+              displayName: "Description"
+            - pattern: "{if.adminstatus}"
+              key: "adminStatus"
+              displayName: "Admin Status"
+            - key: "dt.security_context"
+              pattern: "{dt.security_context}"
+              displayName: "Security Context"
+          requiredDimensions: []
+          instanceNamePattern: "Viptela network interface {if.descr} @ {device.name}"
+  relationships:
+    - fromType: "snmp:com_dynatrace_extension_snmp_generic_viptela_device"
+      typeOfRelation: "SAME_AS"
+      toType: "network:device"
+      sources:
+        - sourceType: "Metrics"
+          condition: "$prefix(com.dynatrace.extension.snmp-generic-viptela-device)"
+    - fromType: "snmp:com_dynatrace_extension_snmp_generic_viptela_network_interface"
+      typeOfRelation: "SAME_AS"
+      toType: "network:interface"
+      sources:
+        - sourceType: "Metrics"
+          condition: "$prefix(com.dynatrace.extension.snmp-generic-viptela-device.if)"
+    - typeOfRelation: "CHILD_OF"
+      fromType: "snmp:com_dynatrace_extension_snmp_generic_viptela_network_interface"
+      toType: "snmp:com_dynatrace_extension_snmp_generic_viptela_device"
+      enabled: true
+      sources:
+        - sourceType: "Metrics"
+          condition: "$prefix(com.dynatrace.extension.snmp-generic-viptela-device)"
+    - typeOfRelation: "SAME_AS"
+      fromType: "snmp:com_dynatrace_extension_snmp_generic_viptela_device"
+      toType: "snmptraps:com_dynatrace_ext_snmp-traps"
+      enabled: true
+      sources:
+        - sourceType: "Entities"
+          mappingRules:
+            - sourceProperty: "dt.ip_addresses"
+              sourceTransformation: "Leave text as-is"
+              destinationProperty: "dt.ip_addresses"
+              destinationTransformation: "Leave text as-is"
+screens:
+  - entityType: "network:device"
+    propertiesCard:
+      displayOnlyConfigured: false
+      properties:
+        - type: "RELATION"
+          importantProperty: true
+          relation:
+            entitySelectorTemplate: "type(\"snmp:com_dynatrace_extension_snmp_generic_vipte\
+              la_device\"),fromRelationships.isSameAs($(entityConditions))"
+            displayName: "Viptela Device"
+    detailsInjections:
+      - key: "viptela_cpu_memory"
+        type: "CHART_GROUP"
+        entitySelectorTemplate: "type(\"snmp:com_dynatrace_extension_snmp_generic_vipte\
+          la_device\"),fromRelationships.isSameAs($(entityConditions))"
+        conditions:
+          - "relatedEntity|entitySelectorTemplate=type(\"snmp:com_dynatrace_ext\
+            ension_snmp_generic_viptela_device\"),fromRelationships.isSameAs($(\
+            entityConditions))"
+          - "entityAttribute|devMonitoringMode=Extension"
+      - key: "device_stats"
+        type: "CHART_GROUP"
+        entitySelectorTemplate: "type(\"snmp:com_dynatrace_extension_snmp_generic_vipte\
+          la_device\"),fromRelationships.isSameAs($(entityConditions))"
+        conditions:
+          - "relatedEntity|entitySelectorTemplate=type(\"snmp:com_dynatrace_ext\
+            ension_snmp_generic_viptela_device\"),fromRelationships.isSameAs($(\
+            entityConditions))"
+          - "entityAttribute|devMonitoringMode=Extension"
+      - key: "network_stats"
+        type: "CHART_GROUP"
+        entitySelectorTemplate: "type(\"snmp:com_dynatrace_extension_snmp_generic_vipte\
+          la_device\"),fromRelationships.isSameAs($(entityConditions))"
+        conditions:
+          - "relatedEntity|entitySelectorTemplate=type(\"snmp:com_dynatrace_ext\
+            ension_snmp_generic_viptela_device\"),fromRelationships.isSameAs($(\
+            entityConditions))"
+          - "entityAttribute|devMonitoringMode=Extension"
+  - entityType: "snmptraps:com_dynatrace_ext_snmp-traps"
+    detailsInjections:
+      - type: "MESSAGE"
+        key: "related-viptela-entity"
+        width: "FULL_SIZE"
+        conditions:
+          - "relatedEntity|entitySelectorTemplate=type(snmp:com_dynatrace_exten\
+            sion_snmp_generic_viptela_device),fromRelationships.isSameAs($(enti\
+            tyConditions))"
+    messageCards:
+      - key: "related-viptela-entity"
+        target: "CLASSIC"
+        type: "MESSAGE"
+        message:
+          text: "Jump to related [Viptela
+            device](relatedEntityScreen|entitySelectorTemplate=type(snmp:com_dy\
+            natrace_extension_snmp_generic_viptela_device),fromRelationships.is\
+            SameAs($(entityConditions))|name=Viptela device)"
+          theme: "INFO"
+  - entityType: "snmp:com_dynatrace_extension_snmp_generic_viptela_device"
+    propertiesCard:
+      displayOnlyConfigured: false
+      properties:
+        - type: "ATTRIBUTE"
+          attribute:
+            key: "system_name"
+            displayName: "Name"
+        - type: "ATTRIBUTE"
+          attribute:
+            key: "dt.dns_names"
+            displayName: "DNS name"
+            hidden: true
+    detailsSettings:
+      target: "BOTH"
+      staticContent:
+        breadcrumbs:
+          - entityType: "snmp:com_dynatrace_extension_snmp_generic_viptela_device"
+            type: "ENTITY_LIST_REF"
+        showProblems: true
+        showProperties: true
+        showAddTag: true
+        showTags: true
+        showGlobalFilter: false
+      layout:
+        autoGenerate: false
+        cards:
+          - type: "CHART_GROUP"
+            key: "device_stats"
+            conditions:
+              - "metricAvailable|metric=com.dynatrace.extension.snmp-generic-vi\
+                ptela-device.memory.used:filter(in(\"dt.entity.snmp:com_dynatra\
+                ce_extension_snmp_generic_viptela_device\",
+                entitySelector(\"entityId($(entityId))\")))|lastWrittenWithinDa\
+                ys=5"
+          - type: "CHART_GROUP"
+            key: "network_stats"
+          - type: "DQL_TABLE"
+            key: "network_interfaces_dql"
+          - type: "ENTITIES_LIST"
+            key: "network_interfaces"
+          - conditions:
+              - "!extensionConfigured|extensionId=com.dynatrace.extension.snmp-\
+                traps-generic"
+            type: "MESSAGE"
+            key: "snmp_traps_info"
+          - conditions:
+              - "!extensionConfigured|extensionId=com.dynatrace.extension.snmp-\
+                traps-generic"
+            key: "snmp_traps_info_platform"
+            type: "MESSAGE"
+            width: "FULL_SIZE"
+          - type: "CHART_GROUP"
+            key: "traps_stats"
+            conditions:
+              - "extensionConfigured|extensionId=com.dynatrace.extension.snmp-t\
+                raps-generic"
+          - conditions:
+              - "extensionConfigured|extensionId=com.dynatrace.extension.snmp-t\
+                raps-generic"
+            key: "traps_logs"
+            type: "LOGS"
+            width: "FULL_SIZE"
+          - type: "INJECTIONS"
+    messageCards:
+      - key: "snmp_traps_info"
+        target: "CLASSIC"
+        type: "MESSAGE"
+        message:
+          text: "Set up [SNMP
+            Traps](hubExtension|extensionId=com.dynatrace.extension.snmp-traps-\
+            generic|text=SNMP Traps) extension to improve observability of this
+            device"
+          theme: "INFO"
+      - key: "snmp_traps_info_platform"
+        target: "PLATFORM"
+        type: "MESSAGE"
+        message:
+          text: "Set up SNMP Traps extension (com.dynatrace.extension.snmp-traps-generic)
+            to improve observability of this device"
+          theme: "INFO"
+    logsCards:
+      - displayName: "Traps and logs"
+        target: "BOTH"
+        enablePaging: true
+        filterQuery: "dt.source_entity inEntitySelector
+          \"type(snmptraps:com_dynatrace_ext_snmp-traps),toRelationships.isSame\
+          As($(entityConditions))\""
+        key: "traps_logs"
+        pageSize: 10
+        showFiltering: true
+        dqlQueryTable: "fetch logs| filter dt.source_entity in [ fetch
+          `dt.entity.snmptraps:com_dynatrace_ext_snmp-traps` | filter
+          in(same_as[`dt.entity.snmp:com_dynatrace_extension_snmp_generic_vipte\
+          la_device`], $(entityId))| fields id ]"
+    chartsCards:
+      - key: "viptela_cpu_memory"
+        target: "BOTH"
+        mode: "NORMAL"
+        displayName: "Viptela CPU & Memory Overview"
+        description: "CPU and Memory metrics from Viptela devices"
+        hideEmptyCharts: true
+        numberOfVisibleCharts: 2
+        charts:
+          - displayName: "CPU Usage"
+            visualizationType: "GRAPH_CHART"
+            graphChartConfig:
+              metrics:
+                - metricSelector: "com.dynatrace.extension.network_device.cpu_usage:splitBy()"
+                  dqlQuery: "timeseries
+                    cpu=avg(`com.dynatrace.extension.network_device.cpu_usage`)"
+                  visualization:
+                    displayName: "CPU Usage"
+                    seriesType: "AREA"
+                    themeColor: "BLUE"
+          - displayName: "Memory Usage"
+            visualizationType: "GRAPH_CHART"
+            graphChartConfig:
+              metrics:
+                - metricSelector: "com.dynatrace.extension.network_device.memory_used:splitBy()"
+                  dqlQuery: "timeseries
+                    used=avg(`com.dynatrace.extension.network_device.memory_use\
+                    d`)"
+                  visualization:
+                    displayName: "Memory Used"
+                    seriesType: "AREA"
+                    themeColor: "GREEN"
+                - metricSelector: "com.dynatrace.extension.network_device.memory_total:splitBy()"
+                  dqlQuery: "timeseries
+                    total=avg(`com.dynatrace.extension.network_device.memory_to\
+                    tal`)"
+                  visualization:
+                    displayName: "Memory Total"
+                    seriesType: "LINE"
+                    themeColor: "GRAY"
+      - key: "traps_stats"
+        target: "BOTH"
+        mode: "NORMAL"
+        entitySelectorTemplate: "type(snmptraps:com_dynatrace_ext_snmp-traps),toRelatio\
+          nships.isSameAs($(entityConditions))"
+        charts:
+          - conditions: []
+            displayName: "Traps Count"
+            graphChartConfig:
+              metrics:
+                - metricSelector: "com.dynatrace.extension.snmp-traps-generic.traps.count:splitBy\
+                    ()"
+                  dqlQuery: "timeseries
+                    count=sum(`com.dynatrace.extension.snmp-traps-generic.traps\
+                    .count`)"
+                  visualization:
+                    displayName: "Traps count"
+                    seriesType: "COLUMN"
+              yAxes: []
+            visualizationType: "GRAPH_CHART"
+          - conditions: []
+            displayName: "Trap OIDs"
+            graphChartConfig:
+              metrics:
+                - metricSelector: "com.dynatrace.extension.snmp-traps-generic.traps.count:splitBy(\
+                    \"trapoid\")"
+                  dqlQuery: "timeseries
+                    count=sum(`com.dynatrace.extension.snmp-traps-generic.traps\
+                    .count`),by:{trapoid}"
+                  visualization:
+                    seriesType: "COLUMN"
+              stacked: true
+              yAxes: []
+            visualizationType: "GRAPH_CHART"
+        conditions: []
+        displayName: "Traps Statistics"
+        numberOfVisibleCharts: 2
+      - key: "network_stats"
+        target: "BOTH"
+        mode: "NORMAL"
+        displayName: "Network Statistics"
+        description: "Populated from IF-MIB"
+        hideEmptyCharts: true
+        numberOfVisibleCharts: 4
+        chartsInRow: 2
+        charts:
+          - displayName: "Network Interfaces Traffic"
+            conditions:
+              - "metricAvailable|metric=com.dynatrace.extension.snmp-generic-vi\
+                ptela-device.if.hc.out.octets.count:filter(in(\"dt.entity.snmp:\
+                com_dynatrace_extension_snmp_generic_viptela_device\",
+                entitySelector(\"entityId($(entityId))\")))|lastWrittenWithinDa\
+                ys=5"
+            visualizationType: "GRAPH_CHART"
+            graphChartConfig:
+              metrics:
+                - metricSelector: "func:com.dynatrace.extension.snmp-generic-viptela-device.if.hc\
+                    .out.octets.bitpersec:splitBy()"
+                  dqlQuery: "timeseries
+                    count=sum(`com.dynatrace.extension.snmp-generic-viptela-dev\
+                    ice.if.hc.out.octets.count`),
+
+                    \ 
+                    by:{`dt.entity.snmp:com_dynatrace_extension_snmp_generic_vi\
+                    ptela_device`},
+
+                    \ 
+                    filter:{`dt.entity.snmp:com_dynatrace_extension_snmp_generi\
+                    c_viptela_device`==$(entityId)}
+
+                    \  | fieldsAdd expression=count[]*8/toDouble(interval/1s)
+
+                    \  | fieldsRemove count
+
+                    \  | summarize
+                    expression=sum(expression[]),interval=takeAny(interval),tim\
+                    eframe=takeAny(timeframe), by:{}\n"
+                  visualization:
+                    displayName: "Interface outgoing traffic (high capacity)"
+                - metricSelector: "func:com.dynatrace.extension.snmp-generic-viptela-device.if.hc\
+                    .in.octets.bitpersec:splitBy()"
+                  dqlQuery: "timeseries
+                    count=sum(`com.dynatrace.extension.snmp-generic-viptela-dev\
+                    ice.if.hc.in.octets.count`),
+
+                    \ 
+                    by:{`dt.entity.snmp:com_dynatrace_extension_snmp_generic_vi\
+                    ptela_device`},
+
+                    \ 
+                    filter:{`dt.entity.snmp:com_dynatrace_extension_snmp_generi\
+                    c_viptela_device`==$(entityId)}
+
+                    \  | fieldsAdd expression=count[]*8/toDouble(interval/1s)
+
+                    \  | fieldsRemove count
+
+                    \  | summarize
+                    expression=sum(expression[]),interval=takeAny(interval),tim\
+                    eframe=takeAny(timeframe), by:{}\n"
+                  visualization:
+                    displayName: "Interface incoming traffic (high capacity)"
+          - displayName: "Interfaces Bandwidth Utilization"
+            conditions:
+              - "metricAvailable|metric=com.dynatrace.extension.snmp-generic-vi\
+                ptela-device.if.hc.in.octets.count:filter(in(\"dt.entity.snmp:c\
+                om_dynatrace_extension_snmp_generic_viptela_device\",
+                entitySelector(\"entityId($(entityId))\")))|lastWrittenWithinDa\
+                ys=5"
+            visualizationType: "GRAPH_CHART"
+            graphChartConfig:
+              metrics:
+                - metricSelector: "func:com.dynatrace.extension.snmp-generic-viptela-device.if.ba\
+                    ndwidth:splitBy()"
+                  dqlQuery: "timeseries
+                    in.octets.count=sum(`com.dynatrace.extension.snmp-generic-v\
+                    iptela-device.if.hc.in.octets.count`),out.octets.count=sum(\
+                    `com.dynatrace.extension.snmp-generic-viptela-device.if.hc.\
+                    out.octets.count`),highspeed=avg(`com.dynatrace.extension.s\
+                    nmp-generic-viptela-device.if.highspeed`),
+
+                    \ 
+                    by:{if.operstatus,sys.contact,device.address,`dt.entity.snm\
+                    p:com_dynatrace_extension_snmp_generic_viptela_network_inte\
+                    rface`,dt.metrics.source,if.speed,device.port,if.idx,if.hig\
+                    hspeed,if.type,`dt.entity.snmp:com_dynatrace_extension_snmp\
+                    _generic_viptela_device`,if.descr,device.name,if.adminstatu\
+                    s,device,if.mtu,if.promiscuousmode,sys.name},
+
+                    \ 
+                    filter:{`dt.entity.snmp:com_dynatrace_extension_snmp_generi\
+                    c_viptela_device`==$(entityId)}
+
+                    \  | fieldsAdd
+                    expression=(((in.octets.count[]*8)+(out.octets.count[]*8))/\
+                    (highspeed[]*1000000))*100/toDouble(interval/1s)
+
+                    \  | fieldsRemove in.octets.count,out.octets.count,highspeed
+
+                    \  | summarize
+                    expression=sum(expression[]),interval=takeAny(interval),tim\
+                    eframe=takeAny(timeframe), by:{}\n"
+                  visualization:
+                    displayName: "Interface bandwidth utilization"
+      - key: "device_stats"
+        target: "BOTH"
+        mode: "NORMAL"
+        displayName: "Device Statistics - Viptela"
+        description: "Populated from Viptela Enterprise MIB (1.3.6.1.4.1.41916)"
+        hideEmptyCharts: true
+        numberOfVisibleCharts: 3
+        charts:
+          - displayName: "CPU Utilization"
+            visualizationType: "GRAPH_CHART"
+            graphChartConfig:
+              metrics:
+                - metricSelector: "com.dynatrace.extension.snmp-generic-viptela-device.cpu.user:s\
+                    plitBy(\"dt.entity.snmp:com_dynatrace_extension_snmp_generi\
+                    c_viptela_device\")"
+                  dqlQuery: "timeseries
+                    cpu.user=avg(`com.dynatrace.extension.snmp-generic-viptela-\
+                    device.cpu.user`),by:{`dt.entity.snmp:com_dynatrace_extensi\
+                    on_snmp_generic_viptela_device`},filter:{`dt.entity.snmp:co\
+                    m_dynatrace_extension_snmp_generic_viptela_device`==$(entit\
+                    yId)}"
+                  visualization:
+                    displayName: "CPU User"
+                    seriesType: "AREA"
+                - metricSelector: "com.dynatrace.extension.snmp-generic-viptela-device.cpu.system\
+                    :splitBy(\"dt.entity.snmp:com_dynatrace_extension_snmp_gene\
+                    ric_viptela_device\")"
+                  dqlQuery: "timeseries
+                    cpu.system=avg(`com.dynatrace.extension.snmp-generic-viptel\
+                    a-device.cpu.system`),by:{`dt.entity.snmp:com_dynatrace_ext\
+                    ension_snmp_generic_viptela_device`},filter:{`dt.entity.snm\
+                    p:com_dynatrace_extension_snmp_generic_viptela_device`==$(e\
+                    ntityId)}"
+                  visualization:
+                    displayName: "CPU System"
+                    seriesType: "AREA"
+              visualization:
+                themeColor: "BLUE"
+          - displayName: "CPU Total Utilization"
+            visualizationType: "GRAPH_CHART"
+            graphChartConfig:
+              metrics:
+                - metricSelector: "func:com.dynatrace.extension.snmp-generic-viptela-device.cpu.t\
+                    otal:splitBy(\"dt.entity.snmp:com_dynatrace_extension_snmp_\
+                    generic_viptela_device\")"
+                  dqlQuery: "timeseries
+                    cpu.idle=avg(`com.dynatrace.extension.snmp-generic-viptela-\
+                    device.cpu.idle`),by:{`dt.entity.snmp:com_dynatrace_extensi\
+                    on_snmp_generic_viptela_device`},filter:{`dt.entity.snmp:co\
+                    m_dynatrace_extension_snmp_generic_viptela_device`==$(entit\
+                    yId)} | fieldsAdd cpu.total=100-cpu.idle[] | fieldsRemove
+                    cpu.idle"
+                  visualization:
+                    displayName: "CPU Total"
+                    seriesType: "LINE"
+              visualization:
+                themeColor: "PURPLE"
+          - displayName: "Memory Usage"
+            visualizationType: "GRAPH_CHART"
+            graphChartConfig:
+              metrics:
+                - metricSelector: "com.dynatrace.extension.snmp-generic-viptela-device.memory.use\
+                    d:splitBy(\"dt.entity.snmp:com_dynatrace_extension_snmp_gen\
+                    eric_viptela_device\")"
+                  dqlQuery: "timeseries
+                    used=avg(`com.dynatrace.extension.snmp-generic-viptela-devi\
+                    ce.memory.used`),by:{`dt.entity.snmp:com_dynatrace_extensio\
+                    n_snmp_generic_viptela_device`},filter:{`dt.entity.snmp:com\
+                    _dynatrace_extension_snmp_generic_viptela_device`==$(entity\
+                    Id)}"
+                  visualization:
+                    displayName: "Memory Used"
+                    seriesType: "AREA"
+                - metricSelector: "com.dynatrace.extension.snmp-generic-viptela-device.memory.tot\
+                    al:splitBy(\"dt.entity.snmp:com_dynatrace_extension_snmp_ge\
+                    neric_viptela_device\")"
+                  dqlQuery: "timeseries
+                    total=avg(`com.dynatrace.extension.snmp-generic-viptela-dev\
+                    ice.memory.total`),by:{`dt.entity.snmp:com_dynatrace_extens\
+                    ion_snmp_generic_viptela_device`},filter:{`dt.entity.snmp:c\
+                    om_dynatrace_extension_snmp_generic_viptela_device`==$(enti\
+                    tyId)}"
+                  visualization:
+                    displayName: "Memory Total"
+                    seriesType: "LINE"
+              visualization:
+                themeColor: "GREEN"
